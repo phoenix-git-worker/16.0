@@ -1,0 +1,98 @@
+
+<odoo>
+    <record id="account.action_bank_statement_tree" model="ir.actions.act_window">
+        <field name="view_mode">tree,pivot,graph,form</field>
+    </record>
+
+    <record id="kw_account_bank_statement_form_view" model="ir.ui.view">
+        <field name="name">account.bank.statement.form ()</field>
+        <field name="model">account.bank.statement</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet string="Bank Statement">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="date" modifiers="{'readonly': true}"/>
+                            <field name="balance_start" on_change="1"/>
+                            <field name="balance_end_real" on_change="1"/>
+                            <field name="currency_id" modifiers="{'readonly': true}"/>
+                        </group>
+                        <group>
+                            <field name="reference"/>
+                            <field name="first_line_index" modifiers="{'readonly': true}"/>
+                            <field name="balance_end" on_change="1" modifiers="{'readonly': true}"/>
+                            <field name="company_id" modifiers="{'readonly': true}"/>
+                            <field name="journal_id" on_change="1" modifiers="{'readonly': true}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="line_ids" on_change="1" required="True">
+                            <tree string="Statement lines" can_create="True" can_write="True" default_order="id desc">
+
+                                <!-- Invisible fields -->
+                                <field name="state" on_change="1"  readonly="True" required="True" invisible="True"/>
+                                <field name="sequence" on_change="1" readonly="True" invisible="True"/>
+                                <field name="company_id" on_change="1" invisible="True"/>
+                                <field name="journal_id" on_change="1" required="True" invisible="True"/>
+                                <field name="is_reconciled" readonly="True" invisible="True"/>
+                                <field name="partner_bank_id" on_change="1" invisible="True"/>
+                                <field name="currency_id" on_change="1" readonly="True" invisible="True"/>
+
+                                <!-- Displayed fields -->
+                                <field name="statement_id" optional="hide"/>
+                                <field name="move_id" on_change="1" readonly="True" required="True"/>
+                                <field name="date" on_change="1" modifiers="{'readonly': [['state', 'in', ['posted', 'cancel']]], 'required': true}"/>
+                                <field name="payment_ref"/>
+                                <field name="partner_id"/>
+                                <field name="ref" optional="hidden" on_change="1"/>
+                                <field name="narration" string="Notes" optional="hidden" on_change="1"/>
+                                <field name="transaction_type" optional="hidden"/>
+                                <field name="amount_currency" optional="hidden" on_change="1"/>
+                                <field name="foreign_currency_id" optional="hidden" on_change="1"/>
+                                <field name="amount" on_change="1"/>
+                                <field name="account_number" optional="hidden"/>
+
+                                <!-- Buttons -->
+                                <!-- <button name="button_undo_reconciliation" type="object"
+                                        attrs="{'invisible': [('is_reconciled', '=', False)]}"
+                                        string="Revert reconciliation" icon="fa-undo"/> -->
+                            </tree>
+                        </field>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="is_complete" on_change="1" modifiers="{'readonly': true}"/>
+                        </group>
+                        <group>
+                            <field name="is_valid" on_change="1" modifiers="{'readonly': true}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="problem_description" modifiers="{'readonly': true}"/>
+                    </group>
+                    <group>
+                        <field name="attachment_ids" can_create="True" can_write="True">
+                            <tree string="Attachments">
+                                <field name="name" modifiers="{'required': true}"/>
+                                <field name="res_model" modifiers="{'readonly': true}"/>
+                                <field name="res_field" modifiers="{'readonly': true}"/>
+                                <field name="res_id" modifiers="{'readonly': true}"/>
+                                <field name="type" on_change="1" modifiers="{'required': true}"/>
+                                <field name="file_size" modifiers="{'readonly': true}"/>
+                                <field name="create_uid" modifiers="{'readonly': true}"/>
+                                <field name="create_date" modifiers="{'readonly': true}"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group>
+                        <separator/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
+
+
+
