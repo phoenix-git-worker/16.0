@@ -1,5 +1,5 @@
 {
-    'name': 'Account create lines extension',
+    'name': 'Create account bank statement',
     'version': '16.0.1.0.0',
     'license': 'OPL-1',
     'category': 'Extra Addons',
@@ -15,13 +15,14 @@
     ],
 
     'data': [
-        'views/kw_account_bank_statement_views.xml',
-        'views/kw_menu_views.xml',
+        'security/ir.model.access.csv',
+
+        'wizard/create_account_bank_statement_wizard_views.xml',
+        'wizard/create_account_bank_statement_line_wizard_views.xml'
     ],
 
     'images': [
         'static/description/icon.png',
-        # 'static/description/cover.png'
     ],
 
     'installable': True,

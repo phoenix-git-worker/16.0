@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="kw_create_account_bank_statement_wizard_action" model="ir.actions.act_window">
+        <field name="name">Create Bank Statement</field>
+        <field name="res_model">kw.create.account.bank.statement</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="kw_create_account_bank_statement_wizard_form" model="ir.ui.view">
+        <field name="name">kw.create.bank.statement.wizard.form</field>
+        <field name="model">kw.create.account.bank.statement</field>
+        <field name="arch" type="xml">
+            <sheet>
+                <form string="Create Bank Statement">
+                    <group>
+                        <field name="kw_journal_id"/>
+                        <field name="kw_acc_number"/>
+                        <field name="kw_line_ids"/>
+                    </group>
+                    <footer>
+                        <button name="import_form" string="Create" type="object" class="btn-primary"/>
+                        <button string="Cancel" special="cancel" class="btn-secondary"/>
+                    </footer>
+                </form>
+            </sheet>
+        </field>
+    </record>
+
+    <menuitem
+        id="kw_create_account_bank_statement_wizard_menu"
+        name="Create Bank Statement"
+        action="kw_create_account_bank_statement_wizard_action"
+        parent="account.account_account_menu"/>
+
+    <record id="view_account_journal_kw_import_form" model="ir.ui.view">
+        <field name="name">account.journal.kw.import.form</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='bank_account_number']/field[@name='bank_statements_source']" position="after">
+                <field  name="bank_statements_source"/>
+                <field name="kw_bank_import_module_type"
+                       attrs="{'invisible': [('bank_statements_source', '!=', 'file_import')]}"/>
+                <field name="kw_bank_import_partner_auto_create"/>
+                <field name="kw_bank_import_initial_date"/>
+            </xpath>
+            <xpath expr="//field[@name='inbound_payment_method_line_ids']" position="after">
+                <group>
+                    <field name="default_debit_account_id" options="{'no_create': True}" domain="[('deprecated', '=', False)]" groups="account.group_account_user"/>
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='outbound_payment_method_line_ids']" position="after">
+                <group>
+                    <field name="default_credit_account_id" options="{'no_create': True}" domain="[('deprecated', '=', False)]" groups="account.group_account_user"/>
+                </group>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
