@@ -12,19 +12,17 @@
         <field name="name">kw.create.bank.statement.wizard.form</field>
         <field name="model">kw.create.account.bank.statement</field>
         <field name="arch" type="xml">
-            <sheet>
-                <form string="Create Bank Statement">
-                    <group>
-                        <field name="kw_journal_id"/>
-                        <field name="kw_acc_number"/>
-                        <field name="kw_line_ids"/>
-                    </group>
-                    <footer>
-                        <button name="import_form" string="Create" type="object" class="btn-primary"/>
-                        <button string="Cancel" special="cancel" class="btn-secondary"/>
-                    </footer>
-                </form>
-            </sheet>
+            <form string="Create Bank Statement">
+                <group>
+                    <field name="kw_journal_id"/>
+                    <field name="kw_acc_number"/>
+                    <field name="kw_line_ids"/>
+                </group>
+                <footer>
+                    <button name="import_form" string="Create" type="object" class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
         </field>
     </record>
 
