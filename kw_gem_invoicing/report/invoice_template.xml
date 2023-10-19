@@ -1,0 +1,416 @@
+<odoo>
+    <template id="kw_gem_invoicing_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="kw_gem_invoicing.kw_gem_invoicing_template"/>
+<!--                <t t-if="doc.kw_invoice_type == 'single'" t-call="kw_gem_invoicing.kw_gem_invoicing_template"/>-->
+<!--                <t t-if="doc.kw_invoice_type == 'consolidated'" t-call="kw_gem_invoicing.kw_gem_cons_invoicing_template"/>-->
+            </t>
+        </t>
+    </template>
+
+    <template id="kw_gem_invoicing_template">
+       <t t-call="web.basic_layout">
+           <t t-set="doc" t-value="doc"/>
+            <style>
+                table.no-border {
+                    border-style: none;
+                    border-width: 0px;
+                    width: 100%;
+                }
+                table.no-border td {
+                    align: left;
+                    text-align: left;
+                }
+                table.bordered {
+                    border-collapse: collapse !important;
+                }
+                table.bordered th, table.bordered td{
+                    border: 1px solid black !important;
+                    padding: 2px 7px 2px 7px !important;
+                }
+                table.bordered th {
+                    align:center !important;
+                    text-align: center !important;
+                }
+                td.right {
+                    align:right !important;
+                    text-align: right !important;
+                }
+                table.bordered > tbody > tr > td.no-left-bottom {
+                    border-left: 0 none white !important;
+                    border-bottom: 0 none white !important;
+                }
+                table.bordered > tbody > tr > td.no-top {
+                    border-top: 0 none white !important;
+                }
+                table.bordered > tbody > tr > td.no-left-bottom-top-right {
+                    border-left: 0 none white !important;
+                    border-top: 0 none white !important;
+                    border-right: 0 none white !important;
+                    border-bottom: 0 none white !important;
+                }
+                th.title_sign {
+                    padding-right: 5px !important;
+                    align: left;
+                }
+            </style>
+            <div class="page">
+                    <div class="text-center" style="border-bottom: 1px solid black;">
+                       <div class="row">
+                           <div class="col-3 mb4 text-left">
+                               <img t-attf-src="/logo.png?company={{ doc.company_id.id }}" style="max-height:110px; margin: 0px; padding: 0px;" t-att-alt="doc.company_id.name"/>
+<!--                               <img alt="img" src="/kw_gem_document/static/icons/logo.png" style="max-height:110px; margin: 0px; padding: 0px;"/>-->
+                           </div>
+                           <div class="col-9 text-right" style="margin: 0px; padding: 0px;">
+                               <span t-field="doc.company_id.kw_header_to_template"/>
+<!--                                <span>Kyiv,Khreshchatyk Street.№22;01001.Phone:(044) 123 45 67 89, e-mail: </span><a href="info@lab.com">info@lab.com</a><br/>-->
+<!--                                <span>Kyiv,Khreshchatyk Street.№22;01001.Phone:(044) 123 45 67 89</span><br/><br/>-->
+                           </div>
+                       </div>
+                    </div>
+                    <div class="text-center">
+                        <ul class="list-inline mb4" style="font-size: 62%">
+                           <br/><span>Order #123/N of December 1, 1999 was approved by the Ministry of Labor, Health and Social Protection. Medical documentation form N 01/02</span>
+                       </ul>
+                    </div><br/>
+                <h3>
+                    Invoice №
+                    <span t-field="doc.name"/>
+                </h3>
+                <table class="no-border">
+                    <tr>
+                        <th class="title_sign"><u>Payer</u>: </th>
+                        <td>
+                            <span t-field="doc.partner_id.name"/><br/><br/>
+                        </td>
+                        <th class="title_sign"><u>Invoice Date</u>: </th>
+                        <td>
+                            <span t-field="doc.invoice_date"/><br/><br/>
+                        </td>
+                    </tr>
+                    <tr><t t-if="doc.kw_invoice_type == 'single'">
+                        <th><u>Order</u>: </th>
+                        <td> <span t-field="doc.invoice_origin"/> <br/><br/></td></t>
+                        <t t-if="doc.kw_invoice_type == 'consolidated'">
+                        <th><u>Invoicing Period</u>: </th>
+                        <td> <b>from</b> <span t-field="doc.kw_date_from"/> <b>to</b> <span t-field="doc.kw_date_to"/> <br/><br/></td></t>
+                        <th class="title_sign"><u>Due Date</u>: </th>
+                        <td>
+                            <span t-field="doc.invoice_date_due"/><br/><br/>
+                        </td>
+                    </tr>
+
+                </table>
+
+<!--                <p style="text-align:center;font-size:20px">від <span t-field="doc.invoice_date" t-options="{'format': 'dd MMMM YYYY'}"/> р. </p>-->
+                <t t-if="doc.kw_invoice_type == 'single'">
+                    <table class="table bordered">
+                        <thead>
+                            <tr style="background-color: #DDDDDD;">
+                                <th style="width:5%;">№</th>
+                                <th style="width:35%;">Service</th>
+                                <th style="width:10%;" class="text-right">Quantity</th>
+                                <th style="width:12.5%;" class="text-right">Unit Price</th>
+                                <th style="width:12.5%;" class="text-right">Subtotal before Discount</th>
+                                <th style="width:12.5%;" class="text-right">Discount, amount</th>
+                                <th style="width:12.5%;" class="text-right">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="doc.invoice_line_ids" t-as="l">
+                                <t t-if="l.display_type == 'line_section'">
+                                    <td colspan="6" style="background-color: #DDDDDD;">
+                                        <span t-esc="l.name"/>
+                                    </td>
+                                </t>
+                                <t t-if="not l.display_type == 'line_section'">
+                                <td class="text-center">
+                                        <span t-esc="l_index + 1"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="l.name"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-field="l.quantity"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="l.price_unit"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="l.kw_subtotal_before_discount"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="l.kw_discount_amount"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="'{:.2f}'.format(l.price_subtotal)"
+                                              t-options="{'widget': 'False'}"/>
+                                    </td>
+                                </t>
+                            </tr>
+                            <tr><td colspan="7" class="text-right no-left-bottom-top-right">
+                            <b><br/></b></td></tr>
+                            </tbody></table>
+                    <table class="table bordered" style="page-break-inside: avoid">
+                            <tr>
+                                <td colspan="6" class="text-right no-left-bottom-top-right">
+                                    <b>Subtotal for Order before Discount:</b>
+                                </td>
+                                <td class="text-right no-left-bottom-top-right">
+                                    <b>
+                                        <span t-esc="'{:.2f}'.format(doc.kw_subtotal_before_discount)" t-options="{'widget': 'False'}"/>
+                                    </b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" class="text-right no-left-bottom-top-right">
+                                    <b>Total Order Discount:</b>
+                                </td>
+                                <td class="text-right no-left-bottom-top-right">
+                                    <b>
+                                        <span t-esc="'{:.2f}'.format(doc.kw_discount_amount)" t-options="{'widget': 'False'}"/>
+                                    </b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" class="text-right no-left-bottom-top-right">
+                                    <b>Total Payable Amount for Order:</b>
+                                </td>
+                                <td class="text-right no-left-bottom-top-right">
+                                    <b>
+                                        <span t-esc="'{:.2f}'.format(doc.kw_total_payable_amount)" t-options="{'widget': 'False'}"/>
+                                    </b>
+                                </td>
+                            </tr>
+                            <tr><td colspan="7" class="text-right no-left-bottom-top-right">
+                            <b><br/></b></td></tr>
+
+                            <tr>
+                                <td colspan="6" class="text-right no-left-bottom-top-right">
+                                    <b>Additional Discount on Invoice:</b>
+                                </td>
+                                <td class="text-right no-left-bottom-top-right">
+                                    <b>
+                                        <span t-esc="'{:.2f}'.format(doc.kw_total_add_discount)" t-options="{'widget': 'False'}"/>
+                                    </b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" class="text-right no-left-bottom-top-right">
+                                    <b>Final Payable Amount on Invoice:</b>
+                                </td>
+                                <td class="text-right no-left-bottom-top-right">
+                                    <b>
+                                        <span t-esc="'{:.2f}'.format(doc.kw_final_payable_amount)" t-options="{'widget': 'False'}"/>
+                                    </b>
+                                </td>
+                            </tr>
+                    </table>
+                    <br/><br/>
+                    <p t-if="doc.move_type in ('out_invoice', 'in_refund') and doc.payment_reference" name="payment_communication">
+                        Please indicate the number of invoice <b><span t-field="doc.payment_reference"/></b> while making a payment.
+                    </p>
+                </t>
+                <t t-if="doc.kw_invoice_type == 'consolidated'">
+                    <table><tbody>
+                        <tr><td colspan="2" class="text-right no-left-bottom-top-right">
+                            <b><br/></b></td></tr>
+                        <tr><td colspan="2" class="text-right no-left-bottom-top-right">
+                            <b><br/></b></td></tr>
+                        <tr>
+                            <td class="title_sign" style="width:310px;">
+                                <b>Subtotal for Order before Discount:</b>
+                            </td>
+                            <td class="text-right no-left-bottom-top-right" style="width:450px;">
+                                <b>
+                                    <span t-esc="'{:.2f}'.format(doc.kw_subtotal_before_discount)" t-options="{'widget': 'False'}"/>
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title_sign" colspan="1">
+                                <b>Total Order Discount:</b>
+                            </td>
+                            <td colspan="2" class="text-right no-left-bottom-top-right" >
+                                <b>
+                                    <span t-esc="'{:.2f}'.format(doc.kw_discount_amount)" t-options="{'widget': 'False'}"/>
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="1">
+                                <b>Total Payable Amount for Order:</b>
+                            </td>
+                            <td colspan="2" class="text-right no-left-bottom-top-right" >
+                                <b>
+                                    <span t-esc="'{:.2f}'.format(doc.kw_total_payable_amount)" t-options="{'widget': 'False'}"/>
+                                </b>
+                            </td>
+                        </tr>
+                        <tr><td colspan="1">
+                            <b><br/></b></td></tr>
+                        <tr>
+                            <td colspan="1">
+                                <b>Additional Discount on Invoice:</b>
+                            </td>
+                            <td colspan="2" class="text-right no-left-bottom-top-right" >
+                                <b>
+                                    <span t-esc="'{:.2f}'.format(doc.kw_total_add_discount)" t-options="{'widget': 'False'}"/>
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="1">
+                                <b>Final Payable Amount on Invoice:</b>
+                            </td>
+                            <td colspan="2" class="text-right no-left-bottom-top-right" >
+                                <b>
+                                    <span t-esc="'{:.2f}'.format(doc.kw_final_payable_amount)" t-options="{'widget': 'False'}"/>
+                                </b>
+                            </td>
+                        </tr>
+                    </tbody>
+                    </table>
+
+                    <br/><br/>
+                    <p t-if="doc.move_type in ('out_invoice', 'in_refund') and doc.payment_reference" name="payment_communication">
+                            Please indicate the number of invoice <b><span t-field="doc.payment_reference"/></b> while making a payment.
+                    </p>
+                    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                </t>
+            </div>
+           <t t-if="doc.kw_invoice_type == 'consolidated'">
+               <div class="page">
+                   <table class="table bordered">
+                   <thead>
+                       <tr style="background-color: #DDDDDD;">
+                            <th style="width:40%;">Service</th>
+                            <th style="width:10%;" class="text-right">Quantity</th>
+                            <th style="width:12.5%;" class="text-right">Unit Price</th>
+                            <th style="width:12.5%;" class="text-right">Subtotal before Discount</th>
+                            <th style="width:12.5%;" class="text-right">Discount, amount</th>
+                            <th style="width:12.5%;" class="text-right">Total</th>
+                       </tr>
+                   </thead>
+                       <tbody>
+                        <tr t-foreach="doc.invoice_line_ids" t-as="l">
+<!--                            <t t-if="not l.is_reward_line">-->
+                                <t t-if="l.display_type == 'line_section'">
+                                    <td colspan="6" style="background-color: #DDDDDD;">
+                                        <span t-esc="l.name"/>
+                                    </td>
+                                </t>
+                                <t t-if="not l.display_type == 'line_section'">
+                                    <td>
+                                        <span t-field="l.name"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-field="l.quantity"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="l.price_unit"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="l.kw_subtotal_before_discount"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="l.kw_discount_amount"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="'{:.2f}'.format(l.price_subtotal)"
+                                              t-options="{'widget': 'False'}"/>
+                                    </td>
+                                </t>
+<!--                            </t>-->
+                           <td colspan="6" class="text-right no-left-bottom-top-right">
+                            <b><br/></b></td></tr>
+                    </tbody>
+                   </table>
+                   <table class="table bordered" style="page-break-inside: avoid">
+                       <tr>
+                            <td colspan="5" class="text-right no-left-bottom-top-right">
+                                <b>Subtotal for Order before Discount:</b>
+                            </td>
+                            <td class="text-right no-left-bottom-top-right">
+                                <b>
+                                    <span t-esc="'{:.2f}'.format(doc.kw_subtotal_before_discount)" t-options="{'widget': 'False'}"/>
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" class="text-right no-left-bottom-top-right">
+                                <b>Total Order Discount:</b>
+                            </td>
+                            <td class="text-right no-left-bottom-top-right">
+                                <b>
+                                    <span t-esc="'{:.2f}'.format(doc.kw_discount_amount)" t-options="{'widget': 'False'}"/>
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" class="text-right no-left-bottom-top-right">
+                                <b>Total Payable Amount for Order:</b>
+                            </td>
+                            <td class="text-right no-left-bottom-top-right">
+                                <b>
+                                    <span t-esc="'{:.2f}'.format(doc.kw_total_payable_amount)" t-options="{'widget': 'False'}"/>
+                                </b>
+                            </td>
+                        </tr>
+                        <tr><td colspan="5" class="text-right no-left-bottom-top-right">
+                            <b><br/></b></td></tr>
+                        <tr>
+                            <td colspan="5" class="text-right no-left-bottom-top-right">
+                                <b>Additional Discount on Invoice:</b>
+                            </td>
+                            <td class="text-right no-left-bottom-top-right">
+                                <b>
+                                    <span t-esc="'{:.2f}'.format(doc.kw_total_add_discount)" t-options="{'widget': 'False'}"/>
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" class="text-right no-left-bottom-top-right">
+                                <b>Final Payable Amount on Invoice:</b>
+                            </td>
+                            <td class="text-right no-left-bottom-top-right">
+                                <b>
+                                    <span t-esc="'{:.2f}'.format(doc.kw_final_payable_amount)" t-options="{'widget': 'False'}"/>
+                                </b>
+                            </td>
+                        </tr>
+                    </table>
+                   <br/><br/>
+                <p t-if="doc.move_type in ('out_invoice', 'in_refund') and doc.payment_reference" name="payment_communication">
+                        Please indicate the number of invoice <b><span t-field="doc.payment_reference"/></b> while making a payment.
+                </p>
+               </div>
+           </t>
+        </t>
+    </template>
+
+    <template id="kw_gem_invoicing_container">
+    <t t-call="web.html_container">
+            <div style="margin-top: 50px">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="kw_gem_invoicing.kw_gem_invoicing_template"/>
+                </t>
+            </div>
+<!--            <div class="footer">-->
+<!--                <div class="text-center">-->
+<!--                    <center><span class="page" /></center>-->
+<!--                </div>-->
+<!--            </div>-->
+        <div t-attf-class="footer">
+            <div class="text-center" style="border-top: 1px solid black;">
+
+
+                <div t-if="report_type == 'pdf'" class="text-muted">
+                    Page: <span class="page"/> / <span class="topage"/>
+                </div>
+            </div>
+        </div>
+        </t>
+    </template>
+</odoo>

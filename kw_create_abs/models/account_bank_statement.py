@@ -5,12 +5,6 @@ class AccountBankStatement(models.Model):
     _name = 'account.bank.statement'
     _inherit = 'account.bank.statement'
 
-    # name = fields.Char(
-    #     string='Reference',
-    #     compute='_compute_name',
-        
-    # )
-
     def _compute_date_index(self):
         for stmt in self:
             sorted_lines = \
