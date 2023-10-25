@@ -1,14 +1,15 @@
 import logging
 
-from odoo import models, fields, api, exceptions, _
+from odoo import models, fields, _
 
 _logger = logging.getLogger(__name__)
 
 
 class KwGemServiceReportPayerInvoice(models.Model):
-    _name = 'kw.gem.service.report.payer.invoice'
-    _description = 'Report on Services/Payers (with invoices) model'
- 
+    _name = 'kw.gem.report.service.payer.invoice'
+    _auto = False
+    _description = 'Report on Services/Payers (with invoices)'
+
     payer_agreement_id = fields.Many2one(
         comodel_name='agreement', string="All Payers' Agreement", )
     company_type = fields.Selection(
@@ -105,6 +106,8 @@ class KwGemServiceReportPayerInvoice(models.Model):
     doctor_2 = fields.Many2one(comodel_name='res.users')
     service_code = fields.Many2one(
         comodel_name='kw.gem.codes', string="Service code")
+    kw_invoice_number = fields.Char()
+    kw_invoice_date = fields.Date()
 
     def _select(self, fields_=None):
         return self._select_sale(fields_)
@@ -185,7 +188,9 @@ class KwGemServiceReportPayerInvoice(models.Model):
             else 0 END) as payments_amount_due,
         l.kw_report_invoiced_amount_for_other as invoiced_amount_for_other,
         l.kw_report_not_invoiced_amount_for_other
-            as not_invoiced_amount_for_other
+            as not_invoiced_amount_for_other,
+        '' as kw_invoice_number,
+        '' as kw_invoice_date
         """
         for field in fields_.values():
             select_ += field

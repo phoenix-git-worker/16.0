@@ -1,8 +1,5 @@
-import logging
 
 from odoo import models
-
-_logger = logging.getLogger(__name__)
 
 
 class SaleOrderDiagnosisValue(models.Model):
@@ -13,7 +10,6 @@ class SaleOrderDiagnosisValue(models.Model):
             [('kw_clinical_diagnosis', '!=', False)]
         ):
             item._compute_kw_report_clinical_diagnosis()
-            _logger.info(item.kw_clinical_diagnosis)
 
     def _cron_compute_invoice(self):
         for payment in self.env['kw.sale.order.payment'].search([]):

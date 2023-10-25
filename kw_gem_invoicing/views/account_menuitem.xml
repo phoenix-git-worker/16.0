@@ -34,6 +34,8 @@
                 <field name="invoiced_amount_for_other" optional="show"/>
                 <field name="not_invoiced_amount_for_other" string="Not Invoiced Amount to Other Payers" optional="show"/>
                 <field name="invoice_status" optional="show"/>
+                <field name="kw_invoice_number" string="Invoice Number"/>
+                <field name="kw_invoice_date" string="Invoice Date"/>
                 <field name="clinical_diagnosis_id" optional="show"/>
                 <field name="sending_organization" optional="show"/>
                 <field name="surgery_name_id" optional="show"/>
@@ -99,6 +101,8 @@
                 <field name="not_invoiced_amount_for_other" string="Not Invoiced Amount to Other Payers"/>
 
                 <field name="invoice_status"/>
+                <field name="kw_invoice_number" string="Invoice Number"/>
+                <field name="kw_invoice_date" string="Invoice Date"/>
                 <field name="clinical_diagnosis_id" optional="show"/>
                 <field name="sending_organization" optional="show"/>
                 <field name="surgery_name_id" optional="show"/>
@@ -159,6 +163,8 @@
                 <field name="invoiced_amount_for_other" optional="show"/>
                 <field name="not_invoiced_amount_for_other" string="Not Invoiced Amount to Other Payers"/>
                 <field name="invoice_status"/>
+                <field name="kw_invoice_number" string="Invoice Number"/>
+                <field name="kw_invoice_date" string="Invoice Date"/>
                 <field name="clinical_diagnosis_id" optional="show"/>
                 <field name="sending_organization" optional="show"/>
                 <field name="surgery_name_id" optional="show"/>
@@ -217,12 +223,12 @@
             </p>
         </field>
     </record>
-    
-    <record id="kw_gem_report_on_service_payers_with_invoices_action" model="ir.actions.act_window">
+
+    <record id="kw_gem_report_service_payer_invoice_action" model="ir.actions.act_window">
         <field name="name">Report on Services/Payers (with invoices)</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">kw.gem.service.report.payer.invoice</field>
-        <field name="view_mode">tree,form</field>
+        <field name="res_model">kw.gem.report.service.payer.invoice</field>
+        <field name="view_mode">tree</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Report on Services/Payers (with invoices)
@@ -432,11 +438,11 @@
             sequence="600"/>
 
     <menuitem
-            id="kw_gem_report_on_service_payers_with_invoices_menu"
+            id="kw_gem_report_service_payer_invoice_menu"
             name="Report on Services/Payers (with invoices)"
             groups="kw_gem.group_kw_gem_financier,kw_gem.group_kw_gem_doctor_director,kw_gem.group_kw_gem_registrar,base.group_system"
             parent="account.menu_finance_reports"
-            action="kw_gem_report_on_service_payers_with_invoices_action"
+            action="kw_gem_report_service_payer_invoice_action"
             sequence="700"/>
 
     <record id="account.menu_finance_reports" model="ir.ui.menu">

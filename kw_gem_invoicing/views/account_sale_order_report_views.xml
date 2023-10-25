@@ -33,6 +33,8 @@
                 <field name="payer_invoiced_amount_for_other" optional="show"/>
                 <field name="payer_not_invoiced_amount_for_other" optional="show"/>
                 <field name="invoice_status"/>
+                <field name="kw_invoice_number" string="Invoice Number"/>
+                <field name="kw_invoice_date" string="Invoice Date"/>
                 <field name="clinical_diagnosis_id" optional="show"/>
                 <field name="sending_organization" optional="show"/>
                 <field name="surgery_name_id" optional="show"/>

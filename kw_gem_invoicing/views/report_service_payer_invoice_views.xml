@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     
-    <record id="kw_gem_service_report_payer_invoices_tree" model="ir.ui.view">
-        <field name="name">kw.gem.service.report.payer.invoice.view.tree(kw_gem_invoicing)</field>
-        <field name="model">kw.gem.service.report.payer.invoice</field>
+    <record id="kw_gem_report_service_payer_invoice_tree" model="ir.ui.view">
+        <field name="name">kw.gem.report.service.payer.invoice.view.tree(kw_gem_invoicing)</field>
+        <field name="model">kw.gem.report.service.payer.invoice</field>
         <field name="arch" type="xml">
             <tree editable="bottom" create="false" edit="false" default_order='date desc'>
                 <field name="name"/>
@@ -34,6 +34,8 @@
                 <field name="invoiced_amount_for_other" optional="show"/>
                 <field name="not_invoiced_amount_for_other" string="Not Invoiced Amount to Other Payers"/>
                 <field name="invoice_status"/>
+                <field name="kw_invoice_number" string="Invoice Number"/>
+                <field name="kw_invoice_date" string="Invoice Date"/>
                 <field name="clinical_diagnosis_id" optional="show"/>
                 <field name="sending_organization" optional="show"/>
                 <field name="surgery_name_id" optional="show"/>
@@ -61,9 +63,9 @@
         </field>
     </record>
 
-    <record id="kw_gem_service_report_payer_invoices_search" model="ir.ui.view">
-        <field name="name">kw.gem.service.report.payer.invoice.view.search(kw_gem_invoicing)</field>
-        <field name="model">kw.gem.service.report.payer.invoice</field>
+    <record id="kw_gem_report_service_payer_invoice_search" model="ir.ui.view">
+        <field name="name">kw.gem.report.service.payer.invoice.view.search(kw_gem_invoicing)</field>
+        <field name="model">kw.gem.report.service.payer.invoice</field>
         <field name="arch" type="xml">
             <search>
                 <field name="name"/>

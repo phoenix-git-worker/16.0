@@ -71,17 +71,26 @@ class AccountMove(models.Model):
     @api.onchange('invoice_line_ids')
     def _compute_kw_subtotal_before_discount(self):
         for el in self:
+            _logger.info('-----Compute subtotal before discount-----')
+            _logger.info(el.invoice_line_ids.mapped('display_type'))
+            _logger.info(el.invoice_line_ids.mapped('is_reward_line'))
+            d_type = ['line_section', 'line_note']
             el.kw_subtotal_before_discount = sum(
                 el.invoice_line_ids.filtered(
                     lambda x: not x.is_reward_line and
-                    not x.display_type).mapped('kw_subtotal_before_discount'))
+                    x.display_type not in d_type).mapped(
+                        'kw_subtotal_before_discount'))
 
     def _compute_kw_discount_amount(self):
         for el in self:
+            d_type = ['line_section', 'line_note']
+            _logger.info('-----Compute subtotal discount-----')
+            _logger.info(el.invoice_line_ids.mapped('display_type'))
+            _logger.info(el.invoice_line_ids.mapped('is_reward_line'))
             el.kw_discount_amount = sum(
                 el.invoice_line_ids.filtered(
                     lambda x: not x.is_reward_line and
-                    not x.display_type).mapped('kw_discount_amount'))
+                    x.display_type not in d_type).mapped('kw_discount_amount'))
 
     def _compute_kw_total_payable_amount(self):
         for el in self:
@@ -170,6 +179,19 @@ class AccountMove(models.Model):
             'domain': [('id', 'in', self.kw_payments_ids.ids)],
             'context': {'create': False,
                         'default_id': self.kw_payments_ids.ids}}
+
+    def unlink(self):
+        for obj in self:
+            sale_order_id = obj._context.get('active_id')
+            sale_order = self.env['sale.order'].sudo().search([
+                ('id', '=', sale_order_id)
+            ])
+            for payment in sale_order.kw_order_payment_ids:
+                if payment.partner_id == obj.partner_id:
+                    payment.kw_report_payer_not_invoiced_amount_for_other += \
+                        payment.kw_report_payer_invoiced_amount_for_other
+                    payment.kw_report_payer_invoiced_amount_for_other = 0.0
+        return super().unlink()
 
 
 class AccountMoveLine(models.Model):

@@ -75,20 +75,20 @@
         </field>
     </record>
 
-    <record id="kw_gem_sale_order_payment_tree" model="ir.ui.view">
+<record id="kw_gem_sale_order_payment_tree" model="ir.ui.view">
         <field name="name">sale.order.account.payment.tree</field>
         <field name="model">account.payment</field>
         <field name="arch" type="xml">
             <tree>
-                <button type="object" string="Open" name="open_full_record" icon="fa-arrow-right"/>
-                <field name="date"/>
-                <field name="name"/>
-                <field name="journal_id"/>
-                <field name="payment_method_line_id"/>
-                <field name="partner_id" string="Customer"/>
-                <field name="amount_company_currency_signed" widget="monetary" string="Amount" sum="Total"/>
-                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state == 'posted'"/>
-            </tree>
-        </field>
-    </record>
+               <button type="object" string="Open" name="open_full_record" icon="fa-arrow-right"/>
+                    <field name="date"/>
+                    <field name="name"/>
+                    <field name="journal_id"/>
+                    <field name="payment_method_line_id"/>
+                    <field name="partner_id" string="Customer"/>
+                    <field name="amount_company_currency_signed" widget="monetary" string="Amount" sum="Total"/>
+                    <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state == 'posted'"/>
+                </tree>
+    </field>
+</record>
 </odoo>

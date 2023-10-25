@@ -13,9 +13,9 @@
                     widget="statinfo"/>
                 </button>
             </xpath>
-<!--            <xpath expr="//field[@name='tax_totals_json']" position="attributes">-->
-<!--                <attribute name="invisible">1</attribute>-->
-<!--            </xpath>-->
+            <xpath expr="//field[@name='tax_totals']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
             <xpath expr="//group" position="after">
                 <field name="kw_invoice_type" invisible="1"/>
                 <tr>
@@ -34,16 +34,14 @@
                 <button name="recompute_coupon_lines" class="btn-primary kw-gem-right-button-2" string="Apply"
                         type="object" states="draft"/>
             </xpath>
-<!--            <xpath expr="//field[@name='tax_totals_json']" position="after">-->
-<!--                <field name="kw_subtotal_before_discount"/>-->
-<!--                <field name="kw_discount_amount"/>-->
-<!--                <field name="kw_total_payable_amount"/><br/>-->
-<!--                <field name="kw_add_discount" readonly="1" force_save="1"/>-->
-<!--                <field name="kw_total_add_discount" invisible="1"/>-->
-<!--                <button name="recompute_coupon_lines" class="btn-primary" string="Apply Additional Dicount"-->
-<!--                        type="object" states="draft"/>-->
-<!--                <field name="kw_final_payable_amount"/>-->
-<!--            </xpath>-->
+            <xpath expr="//field[@name='tax_totals']" position="after">
+                <field name="kw_subtotal_before_discount" colspan="2"/>
+                <field name="kw_discount_amount" force_save="1" colspan="2"/>
+                <field name="kw_total_payable_amount" colspan="2"/>
+                <field name="kw_add_discount" colspan="2" readonly="1" force_save="1"/>
+                <field name="kw_total_add_discount" colspan="2" invisible="1"/>
+                <field name="kw_final_payable_amount" colspan="2"/>
+            </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="attributes">
                 <attribute name="string">Service</attribute>
                  <attribute name="invisible">1</attribute>

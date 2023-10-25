@@ -12,9 +12,15 @@ class SaleOrderPayment(models.Model):
         selection=[('person', 'Individual'), ('company', 'Company')],
         related='partner_id.company_type', store=True)
     kw_report_payer_invoiced_amount_for_other = fields.Float(
-        compute='_compute_payer_invoices', store=True)
+        compute='_compute_payer_invoices',
+        compute_sudo=True,
+        store=True
+    )
     kw_report_payer_not_invoiced_amount_for_other = fields.Float(
-        compute='_compute_payer_invoices', store=True)
+        compute='_compute_payer_invoices',
+        compute_sudo=True,
+        store=True
+    )
     kw_report_payments_sum = fields.Float(
         compute='_compute_report_payment_sum', store=True)
     kw_report_payments_amount_due = fields.Float(
@@ -30,7 +36,7 @@ class SaleOrderPayment(models.Model):
         for obj in self:
             payer_move_ids = obj.sale_order_id.invoice_ids.filtered(
                 lambda x: x.partner_id.id == obj.partner_id.id and
-                x.state == 'posted')
+                x.state in ('draft', 'posted'))
             invoice_line_ids = payer_move_ids.mapped(
                 'invoice_line_ids').filtered(
                 lambda x: obj.sale_order_id in x.sale_line_ids.
