@@ -8,7 +8,7 @@ _logger = logging.getLogger(__name__)
 class AccountInvoiceReport(models.Model):
     _name = 'kw.gem.service.report.payer'
     _auto = False
-    _description = 'Report on Services (1 service from case - 1 line)'
+    _description = 'Report on Services/Payers (1 service - number of payers)'
 
     payer_agreement_id = fields.Many2one(
         comodel_name='agreement', string="All Payers' Agreement", )
@@ -68,7 +68,7 @@ class AccountInvoiceReport(models.Model):
     surgery_name_id = fields.Many2one(
         comodel_name='kw.gem.surgery.name', string="Surgery name", )
     surgery_date = fields.Date()
-    received_material = fields.Char(string="Materials from Initial Document", )
+    received_material = fields.Char(string="Materials from Initial Document")
     total_containers = fields.Integer(string="Total Incoming Containers", )
     total_cassettes = fields.Integer(string="Total Incoming Cassettes", )
     total_slides = fields.Integer(string="Total Incoming Slides", )

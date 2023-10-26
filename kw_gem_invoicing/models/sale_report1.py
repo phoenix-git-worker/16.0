@@ -8,6 +8,7 @@ _logger = logging.getLogger(__name__)
 class OrderReportBase(models.Model):
     _name = 'kw.gem.sale.report'
     _auto = False
+    _description = 'Report on Cases (1 case - 1 line)'
 
     order_id = fields.Many2one(comodel_name='sale.order')
     name = fields.Char(string="Sale Order")

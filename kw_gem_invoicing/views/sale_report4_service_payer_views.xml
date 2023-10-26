@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    
-    <record id="kw_gem_report_service_payer_invoice_tree" model="ir.ui.view">
-        <field name="name">kw.gem.report.service.payer.invoice.view.tree(kw_gem_invoicing)</field>
-        <field name="model">kw.gem.report.service.payer.invoice</field>
+
+    <record id="kw_gem_service_report_payer_view_tree" model="ir.ui.view">
+        <field name="name">kw.gem.service.report.payer.view.tree(kw_gem_invoicing)</field>
+        <field name="model">kw.gem.service.report.payer</field>
         <field name="arch" type="xml">
             <tree editable="bottom" create="false" edit="false" default_order='date desc'>
                 <field name="name"/>
@@ -63,9 +63,9 @@
         </field>
     </record>
 
-    <record id="kw_gem_report_service_payer_invoice_search" model="ir.ui.view">
-        <field name="name">kw.gem.report.service.payer.invoice.view.search(kw_gem_invoicing)</field>
-        <field name="model">kw.gem.report.service.payer.invoice</field>
+    <record id="invoicing_service_report_form_2_view_search" model="ir.ui.view">
+        <field name="name">kw.gem.invoicing.service.report.form.2.view.search(kw_gem_invoicing)</field>
+        <field name="model">kw.gem.service.report.payer</field>
         <field name="arch" type="xml">
             <search>
                 <field name="name"/>
@@ -118,6 +118,17 @@
                 <filter name="archive_date" date="date" string="Archive date"/>
                 <filter name="surgery_date" date="date" string="Surgery Date"/>
             </search>
+        </field>
+    </record>
+
+    <record id="kw_gem_invoicing_payer_report_form_2_action" model="ir.actions.act_window">
+        <field name="name">Report on Services/Payers (1 service - number of payers)</field>
+        <field name="res_model">kw.gem.service.report.payer</field>
+        <field name="view_mode">tree,search</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+           Service Report (form 2)
+            </p>
         </field>
     </record>
 

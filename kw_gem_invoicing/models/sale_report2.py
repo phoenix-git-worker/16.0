@@ -8,6 +8,7 @@ _logger = logging.getLogger(__name__)
 class AccountInvoiceSaleReport2(models.Model):
     _name = 'kw.gem.sale.report2'
     _auto = False
+    _description = 'Report on Cases/Payers (1 case - number of payers)'
 
     payer_id = fields.Many2one(
         comodel_name='res.partner', string="Payers")
@@ -211,10 +212,10 @@ class AccountInvoiceSaleReport2(models.Model):
     def _from_sale(self, from_clause=''):
         from_ = """FROM
                 kw_sale_order_payment payment
-                    LEFT JOIN sale_order s on
+                    LEFT JOIN sale_order s ON
                     (s.id = payment.sale_order_id)
-                    LEFT JOIN res_partner rp on (s.kw_patient_id = rp.id)
-                    left join sale_order_line l on (s.id = l.order_id)
+                    LEFT JOIN res_partner rp ON (s.kw_patient_id = rp.id)
+                    LEFT JOIN sale_order_line l ON (s.id = l.order_id)
                 %s
                 """ % from_clause
         return from_
@@ -238,7 +239,6 @@ class AccountInvoiceSaleReport2(models.Model):
     def _where(self):
         return '''WHERE payment.partner_id IS NOT NULL
             and l.kw_product_qty != 0
-                and payment.share != 0
             '''
 
     @property

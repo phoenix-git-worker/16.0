@@ -68,7 +68,7 @@ class KwGemServiceReportPayerInvoice(models.Model):
     surgery_name_id = fields.Many2one(
         comodel_name='kw.gem.surgery.name', string="Surgery name", )
     surgery_date = fields.Date()
-    received_material = fields.Char(string="Materials from Initial Document", )
+    received_material = fields.Char(string="Materials from Initial Document")
     total_containers = fields.Integer(string="Total Incoming Containers", )
     total_cassettes = fields.Integer(string="Total Incoming Cassettes", )
     total_slides = fields.Integer(string="Total Incoming Slides", )
@@ -106,8 +106,8 @@ class KwGemServiceReportPayerInvoice(models.Model):
     doctor_2 = fields.Many2one(comodel_name='res.users')
     service_code = fields.Many2one(
         comodel_name='kw.gem.codes', string="Service code")
-    kw_invoice_number = fields.Char()
-    kw_invoice_date = fields.Date()
+    invoice_number = fields.Char()
+    invoice_date = fields.Date()
 
     def _select(self, fields_=None):
         return self._select_sale(fields_)
@@ -189,8 +189,10 @@ class KwGemServiceReportPayerInvoice(models.Model):
         l.kw_report_invoiced_amount_for_other as invoiced_amount_for_other,
         l.kw_report_not_invoiced_amount_for_other
             as not_invoiced_amount_for_other,
-        '' as kw_invoice_number,
-        '' as kw_invoice_date
+        CASE WHEN am.state = 'posted' THEN am.name ELSE NULL END
+            as invoice_number,
+        CASE WHEN am.state = 'posted' THEN am.date ELSE NULL END
+            as invoice_date
         """
         for field in fields_.values():
             select_ += field
@@ -199,10 +201,15 @@ class KwGemServiceReportPayerInvoice(models.Model):
     def _from_sale(self, from_clause=''):
         from_ = """
         FROM sale_order_line l
-            left join sale_order s on s.id = l.order_id
-            LEFT JOIN res_partner rp on s.kw_patient_id = rp.id
-            LEFT JOIN kw_gem_payroll payroll on
-                payroll.service_id = l.product_id
+            LEFT JOIN sale_order s
+                ON s.id = l.order_id
+            LEFT JOIN res_partner rp
+                ON s.kw_patient_id = rp.id
+            LEFT JOIN kw_gem_payroll payroll
+                ON payroll.service_id = l.product_id
+            LEFT JOIN account_move am
+                ON am.invoice_origin = s.name
+                AND am.partner_id = l.order_partner_id
             %s
            """ % from_clause
         return from_
@@ -225,7 +232,10 @@ class KwGemServiceReportPayerInvoice(models.Model):
                l.product_id,
                payroll.code_id,
                payroll.doctor1_id,
-               payroll.doctor2_id
+               payroll.doctor2_id,
+               am.name,
+               am.date,
+               am.state
                %s
            """ % (groupby)
         return groupby_

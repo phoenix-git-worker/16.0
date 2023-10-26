@@ -75,11 +75,12 @@ class AccountMove(models.Model):
             _logger.info(el.invoice_line_ids.mapped('display_type'))
             _logger.info(el.invoice_line_ids.mapped('is_reward_line'))
             d_type = ['line_section', 'line_note']
-            el.kw_subtotal_before_discount = sum(
-                el.invoice_line_ids.filtered(
-                    lambda x: not x.is_reward_line and
-                    x.display_type not in d_type).mapped(
-                        'kw_subtotal_before_discount'))
+            values = el.invoice_line_ids.filtered(
+                lambda x: not x.is_reward_line and
+                x.display_type not in d_type).mapped(
+                    'kw_subtotal_before_discount')
+            rounded_values = [round(val, 2) for val in values]
+            el.kw_subtotal_before_discount = sum(rounded_values)
 
     def _compute_kw_discount_amount(self):
         for el in self:
@@ -87,10 +88,11 @@ class AccountMove(models.Model):
             _logger.info('-----Compute subtotal discount-----')
             _logger.info(el.invoice_line_ids.mapped('display_type'))
             _logger.info(el.invoice_line_ids.mapped('is_reward_line'))
-            el.kw_discount_amount = sum(
-                el.invoice_line_ids.filtered(
-                    lambda x: not x.is_reward_line and
-                    x.display_type not in d_type).mapped('kw_discount_amount'))
+            values = el.invoice_line_ids.filtered(
+                lambda x: not x.is_reward_line and
+                x.display_type not in d_type).mapped('kw_discount_amount')
+            rounded_values = [round(val, 2) for val in values]
+            el.kw_discount_amount = sum(rounded_values)
 
     def _compute_kw_total_payable_amount(self):
         for el in self:
@@ -105,14 +107,14 @@ class AccountMove(models.Model):
 
     def _compute_kw_add_discount(self):
         reward = self.invoice_line_ids.filtered(
-            lambda x: x.name == 'Additional Dicount on Invoice')
+            lambda x: x.name == 'Additional Discount on Invoice')
         self.kw_add_discount = -reward.price_total
 
     def invoice_print(self):
         # self.ensure_one()
         return self.env.ref(
-            'kw_gem_invoicing.action_kw_invoice_proforma_print_report'
-        ).report_action(self)
+            'kw_gem_invoicing.action_kw_invoice_proforma_'
+            'print_report').report_action(self)
 
     def _get_reward_lines(self):
         self.ensure_one()

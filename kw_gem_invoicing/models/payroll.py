@@ -25,7 +25,8 @@ class Payroll(models.Model):
         compute='_compute_rep_invoices', compute_sudo=True, store=True)
 
     @api.depends('sale_order_id.kw_agreement_id', 'sale_order_id.partner_id',
-                 'sale_order_id.is_split_by_payers', 'service_id')
+                 'sale_order_id.is_split_by_payers', 'service_id', 
+                 'sale_order_line_id.order_partner_id')
     def _compute_rep_payer_name(self):
         for res in self:
             if not res.sale_order_id.order_line:
@@ -42,7 +43,8 @@ class Payroll(models.Model):
                 payer_types = self.env['res.partner'].search([
                     ('id', 'in', payer_ids.ids)]).mapped('company_type')
             else:
-                res.kw_report_payer_name = res.sale_order_id.partner_id.name
+                res.kw_report_payer_name = \
+                    res.sale_order_line_id.order_partner_id.name
                 res.kw_report_agreement_name = \
                     res.sale_order_id.kw_agreement_id.name
                 payer_types = self.env['res.partner'].search([

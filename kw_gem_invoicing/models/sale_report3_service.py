@@ -8,10 +8,12 @@ _logger = logging.getLogger(__name__)
 class AccountInvoiceReport(models.Model):
     _name = 'kw.gem.sale.report.service'
     _auto = False
+    _description = 'Report on Services (1 service from case - 1 line)'
 
     product_id = fields.Many2one(
         comodel_name='product.product',
-        string="Service Name")
+        string="Service Name"
+    )
     order_id = fields.Many2one(comodel_name='sale.order')
     name = fields.Char(string="Sale Order")
     date = fields.Datetime(string="Order Datе")
