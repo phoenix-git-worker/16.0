@@ -1,0 +1,74 @@
+<odoo>
+
+    <record id="sale.sale_menu_root" model="ir.ui.menu">
+        <field name="name">Cases</field>
+        <field name="sequence">1</field>
+    </record>
+
+    <record id="sale.menu_sale_quotations" model="ir.ui.menu">
+        <field name="groups_id"
+               eval="[(6, 0, [ref('sales_team.group_sale_manager')])]"/>
+    </record>
+
+    <record id="sale.menu_sale_order" model="ir.ui.menu">
+        <field name="groups_id"
+               eval="[(6, 0, [ref('sales_team.group_sale_manager'), ref('kw_gem.group_kw_gem_sale_user')])]"/>
+    </record>
+
+    <record id="sale.menu_sale_config" model="ir.ui.menu">
+        <field name="groups_id"
+               eval="[(6, 0, [ref('sales_team.group_sale_manager'), ref('kw_gem.group_kw_gem_sale_user')])]"/>
+    </record>
+
+<!--    <record id="sale.action_orders" model="ir.actions.act_window">-->
+<!--        <field name="name">Sales Orders</field>-->
+<!--        <field name="type">ir.actions.act_window</field>-->
+<!--        <field name="res_model">sale.order</field>-->
+<!--        <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>-->
+<!--        <field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale"/>-->
+<!--        <field name="domain">[]</field>-->
+<!--        <field name="help" type="html">-->
+<!--            <p class="o_view_nocontent_smiling_face">-->
+<!--                Sale order is not found!-->
+<!--            </p>-->
+<!--        </field>-->
+<!--    </record>-->
+
+    <menuitem id="kw_gem_catalogs_menu"
+              name="Catalogs"
+              parent="sale.sale_menu_root"
+              sequence="45"/>
+
+<!--    <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">-->
+<!--        <field name="help" type="html">-->
+<!--            <p class="o_view_nocontent_smiling_face">-->
+<!--                Sale order is not found!-->
+<!--            </p>-->
+<!--        </field>-->
+<!--    </record>-->
+
+<!--    <record id="sale.action_quotations" model="ir.actions.act_window">-->
+<!--        <field name="help" type="html">-->
+<!--            <p class="o_view_nocontent_smiling_face">-->
+<!--                Sale order is not found!-->
+<!--            </p>-->
+<!--        </field>-->
+<!--    </record>-->
+
+<!--    <record id="sale.action_orders_salesteams" model="ir.actions.act_window">-->
+<!--        <field name="help" type="html">-->
+<!--            <p class="o_view_nocontent_smiling_face">-->
+<!--                Sale order is not found!-->
+<!--            </p>-->
+<!--        </field>-->
+<!--    </record>-->
+
+<!--    <record id="sale.action_sale_order_form_view" model="ir.actions.act_window">-->
+<!--        <field name="help" type="html">-->
+<!--            <p class="o_view_nocontent_smiling_face">-->
+<!--                Sale order is not found!-->
+<!--            </p>-->
+<!--        </field>-->
+<!--    </record>-->
+
+</odoo>

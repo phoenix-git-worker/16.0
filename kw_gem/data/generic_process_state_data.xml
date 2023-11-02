@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+
+<!--Sale order-->
+
+    <record id="kw_gem_generic_process_state_sale_draft"
+            model="generic.process.stage">
+        <field name="name">New</field>
+        <field name="code">draft</field>
+        <field name="sequence">1</field>
+        <field name="sale_state1">draft</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_state_sale_confirm"
+            model="generic.process.stage">
+        <field name="name">Registered</field>
+        <field name="code">confirm</field>
+        <field name="sequence">2</field>
+        <field name="sale_state1">confirm</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_state_sale_progress"
+            model="generic.process.stage">
+        <field name="name">Laboratory</field>
+        <field name="code">progress</field>
+        <field name="sequence">3</field>
+        <field name="sale_state1">progress</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_state_sale_described"
+            model="generic.process.stage">
+        <field name="name">Described</field>
+        <field name="code">described</field>
+        <field name="sequence">4</field>
+        <field name="sale_state1">described</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_state_sale_cassettes"
+            model="generic.process.stage">
+        <field name="name">Cassettes</field>
+        <field name="code">cassettes</field>
+        <field name="sequence">5</field>
+        <field name="sale_state1">cassettes</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_state_sale_process"
+            model="generic.process.stage">
+        <field name="name">Processing</field>
+        <field name="code">process</field>
+        <field name="sale_state1">process</field>
+        <field name="sequence">6</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_state_sale_slides"
+            model="generic.process.stage">
+        <field name="name">Slides</field>
+        <field name="code">slides</field>
+        <field name="sequence">7</field>
+        <field name="sale_state1">slides</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_state_sale_colored"
+            model="generic.process.stage">
+        <field name="name">Colored</field>
+        <field name="code">colored</field>
+        <field name="sequence">8</field>
+        <field name="sale_state1">colored</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_state_sale_preparation_done"
+            model="generic.process.stage">
+        <field name="name">Preparation done</field>
+        <field name="code">preparation_done</field>
+        <field name="sequence">9</field>
+        <field name="sale_state1">preparation_done</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_state_sale_result"
+            model="generic.process.stage">
+        <field name="name">Conclusion start</field>
+        <field name="code">result</field>
+        <field name="sale_state1">result</field>
+        <field name="sequence">10</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_state_sale_conclusion_to_be_confirmed"
+            model="generic.process.stage">
+        <field name="name">Conclusion to be confirmed</field>
+        <field name="code">conclusion_to_be_confirmed</field>
+        <field name="sequence">11</field>
+        <field name="sale_state1">conclusion_to_be_confirmed</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_state_sale_conclusion"
+            model="generic.process.stage">
+        <field name="name">Conclusion done</field>
+        <field name="code">conclusion</field>
+        <field name="sale_state1">conclusion</field>
+        <field name="sequence">12</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_state_sale_sent"
+            model="generic.process.stage">
+        <field name="name">Conclusion sent</field>
+        <field name="code">sent</field>
+        <field name="sale_state1">sent</field>
+        <field name="sequence">13</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_state_sale_archive"
+            model="generic.process.stage">
+        <field name="name">Archive</field>
+        <field name="code">archive</field>
+        <field name="sale_state1">archive</field>
+        <field name="sequence">14</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+        <field name="is_mass_change_status" eval="True"/>
+    </record>
+
+<!--Slide-->
+
+    <record id="kw_gem_generic_process_state_slide_draft"
+            model="generic.process.stage">
+        <field name="name">New</field>
+        <field name="code">draft</field>
+        <field name="slide_state">draft</field>
+        <field name="sequence">1</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_slide_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_state_slide_colored"
+            model="generic.process.stage">
+        <field name="name">Colored</field>
+        <field name="code">colored</field>
+        <field name="slide_state">colored</field>
+        <field name="sequence">2</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_slide_type1"/>
+        <field name="is_mass_change_status" eval="True"/>
+    </record>
+
+    <record id="kw_gem_generic_process_state_slide_preparation_done"
+            model="generic.process.stage">
+        <field name="name">Preparation Done</field>
+        <field name="code">preparation_done</field>
+        <field name="slide_state">preparation_done</field>
+        <field name="sequence">3</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_slide_type1"/>
+        <field name="is_mass_change_status" eval="True"/>
+    </record>
+
+    <record id="kw_gem_generic_process_state_slide_archive"
+            model="generic.process.stage">
+        <field name="name">Archive</field>
+        <field name="code">archive</field>
+        <field name="slide_state">archive</field>
+        <field name="sequence">4</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_slide_type1"/>
+        <field name="is_mass_change_status" eval="True"/>
+    </record>
+
+<!--Cassette-->
+
+    <record id="kw_gem_generic_process_state_cassette_draft"
+            model="generic.process.stage">
+        <field name="name">New</field>
+        <field name="code">draft</field>
+        <field name="cassette_state">draft</field>
+        <field name="sequence">1</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_cassette_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_state_cassette_process"
+            model="generic.process.stage">
+        <field name="name">Processing</field>
+        <field name="code">process</field>
+        <field name="cassette_state">process</field>
+        <field name="sequence">2</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_cassette_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_state_cassette_slides"
+            model="generic.process.stage">
+        <field name="name">Slides</field>
+        <field name="code">slides</field>
+        <field name="cassette_state">slides</field>
+        <field name="sequence">3</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_cassette_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_state_cassette_archive"
+            model="generic.process.stage">
+        <field name="name">Archive</field>
+        <field name="code">archive</field>
+        <field name="cassette_state">archive</field>
+        <field name="sequence">4</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_cassette_type1"/>
+        <field name="is_mass_change_status" eval="True"/>
+    </record>
+
+<!--Sample-->
+
+    <record id="kw_gem_generic_process_state_sample_draft"
+            model="generic.process.stage">
+        <field name="name">New</field>
+        <field name="code">draft</field>
+        <field name="sample_state">draft</field>
+        <field name="sequence">1</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sample_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_state_sample_described"
+            model="generic.process.stage">
+        <field name="name">Described</field>
+        <field name="code">described</field>
+        <field name="sample_state">described</field>
+        <field name="sequence">2</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sample_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_state_sample_cassettes"
+            model="generic.process.stage">
+        <field name="name">Cassettes</field>
+        <field name="code">cassettes</field>
+        <field name="sample_state">cassettes</field>
+        <field name="sequence">3</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sample_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_state_sample_archive"
+            model="generic.process.stage">
+        <field name="name">Archive</field>
+        <field name="code">archive</field>
+        <field name="sample_state">archive</field>
+        <field name="sequence">4</field>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sample_type1"/>
+        <field name="is_mass_change_status" eval="True"/>
+    </record>
+
+</odoo>

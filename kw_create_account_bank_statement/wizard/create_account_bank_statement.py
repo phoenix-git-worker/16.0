@@ -18,12 +18,12 @@ class CreateAccountBankStatement(models.TransientModel):
         domain=[('type', '=', 'bank')]
     )
     kw_acc_number = fields.Char(
-        compute='_compute_kw_acc_number', 
+        compute='_compute_kw_acc_number',
         string='Acc Number'
     )
     kw_line_ids = fields.One2many(
-        comodel_name='kw.create.account.bank.statement.line', 
-        inverse_name='kw_statement_id', 
+        comodel_name='kw.create.account.bank.statement.line',
+        inverse_name='kw_statement_id',
         string='Lines'
     )
     attachment_ids = fields.Many2many(
@@ -32,7 +32,6 @@ class CreateAccountBankStatement(models.TransientModel):
         required=True,
         help='Get you bank statements in electronic'
              ' format from your bank and select them here.')
-
 
     @api.onchange('kw_journal_id')
     def _compute_kw_acc_number(self):
@@ -43,9 +42,9 @@ class CreateAccountBankStatement(models.TransientModel):
             if not self.kw_journal_id.bank_account_id:
                 raise ValidationError(
                     _('Error! Add an account number'))
-            
-            self.kw_acc_number = self.kw_journal_id.bank_account_id.acc_number.replace(' ', '')
 
+            self.kw_acc_number = \
+                self.kw_journal_id.bank_account_id.acc_number.replace(' ', '')
 
     def import_form(self):
         self.ensure_one()
@@ -80,16 +79,16 @@ class CreateAccountBankStatement(models.TransientModel):
             'domain': [('id', 'in', statement_line_ids)],
         }
 
-
     def _parse_form(self):
         statement = {}
 
         for line in self.kw_line_ids:
             _logger.info("---line---: %s", line)
             statement_date = line.kw_statement_date
-            
+
             if float(line.kw_currency_coverage):
-                amount = (-1 if line.kw_debet else 1) * float(line.kw_currency_coverage)
+                amount = (-1 if line.kw_debet else 1) * float(
+                    line.kw_currency_coverage)
             else:
                 amount = float(line.kw_credit or 0) - float(line.kw_debet or 0)
 
@@ -109,14 +108,16 @@ class CreateAccountBankStatement(models.TransientModel):
             if partner:
                 partner_id = partner.id
                 self.set_bank_acc(
-                    partner_id=partner_id, acc=line.kw_partner_acc_number, bic=line.kw_raw_bic)
+                    partner_id=partner_id,
+                    acc=line.kw_partner_acc_number, bic=line.kw_raw_bic)
 
             statement[statement_date]['transactions'].append({
                 'payment_ref': line.kw_payment_purpose,
                 'date': statement_date,
                 'amount': amount,
                 'unique_import_id': '{}{}{}{}'.format(
-                    line.kw_partner_tax_id, line.kw_ref, line.kw_document_date, line.kw_payment_purpose),
+                    line.kw_partner_tax_id, line.kw_ref,
+                    line.kw_document_date, line.kw_payment_purpose),
                 'account_number': line.kw_partner_acc_number,
                 'note': line.kw_payment_purpose,
                 'partner_name': line.kw_partner_id.name,
@@ -135,7 +136,6 @@ class CreateAccountBankStatement(models.TransientModel):
             _logger.info("---statement values---: %s", statement.values())
             return currency, self.kw_acc_number, statement.values()
 
-
     def _journal_creation_wizard(self, currency, account_number):
         return {
             'name': _('Journal Creation'),
@@ -151,7 +151,6 @@ class CreateAccountBankStatement(models.TransientModel):
                 'default_type': 'bank',
             }
         }
-
 
     def _check_parsed_data(self, stmts_vals, account_number):
         extra_msg = _('If it contains transactions for more than one account,'
@@ -171,14 +170,12 @@ class CreateAccountBankStatement(models.TransientModel):
                   'account %s.') % (account_number,) + '\n' + extra_msg
             )
 
-
     def _check_journal_bank_account(self, journal, account_number):
         # Needed for CH to accommodate for non-unique account numbers
         sanitized_acc_number = journal.bank_account_id.sanitized_acc_number
         if " " in sanitized_acc_number:
             sanitized_acc_number = sanitized_acc_number.split(" ")[0]
         return sanitized_acc_number == account_number
-
 
     def _find_additional_data(self, currency_code, account_number):
         company_currency = self.env.company.currency_id
@@ -232,7 +229,6 @@ class CreateAccountBankStatement(models.TransientModel):
                               'statement. Please manually select a journal.'))
         return currency, journal
 
-
     def _complete_stmts_vals(self, stmts_vals, journal, account_number):
         for st_vals in stmts_vals:
             st_vals['journal_id'] = journal.id
@@ -266,7 +262,6 @@ class CreateAccountBankStatement(models.TransientModel):
                             line_vals[
                                 'partner_id'] = partner_bank.partner_id.id
         return stmts_vals
-
 
     def _create_bank_statements(self, stmts_vals):
         BankStatement = self.env['account.bank.statement']

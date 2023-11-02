@@ -1,6 +1,6 @@
 import logging
 
-from odoo import models, fields, api, exceptions, _
+from odoo import models, fields, api
 
 _logger = logging.getLogger(__name__)
 
@@ -8,15 +8,15 @@ _logger = logging.getLogger(__name__)
 class CreateAccountBankStatementLine(models.TransientModel):
     _name = 'kw.create.account.bank.statement.line'
     _description = 'Create Account Bank Statement Line'
-    
+
     kw_statement_date = fields.Date('Statement Date')
     kw_document_date = fields.Date('Document Date')
     kw_statement_id = fields.Many2one(
-        comodel_name='kw.create.account.bank.statement', 
+        comodel_name='kw.create.account.bank.statement',
         string='Statement'
     )
     kw_partner_id = fields.Many2one(
-        comodel_name='res.partner', 
+        comodel_name='res.partner',
         string='Partner'
     )
     kw_partner_tax_id = fields.Char(
@@ -29,11 +29,11 @@ class CreateAccountBankStatementLine(models.TransientModel):
         domain="[('partner_id', '=', kw_partner_id)]",
     )
     kw_partner_acc_number = fields.Char(
-        compute='_compute_bank_deps', 
+        compute='_compute_bank_deps',
         string='Partner Acc Number'
     )
     kw_raw_bic = fields.Char(
-        compute='_compute_bank_deps', 
+        compute='_compute_bank_deps',
         string='Partner Bank Identifier Code'
     )
     kw_ref = fields.Text('Note')

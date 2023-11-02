@@ -1,0 +1,226 @@
+<odoo>
+
+    <record id="cassette_view_kw_gem_slide_tree" model="ir.ui.view">
+        <field name="name">kw.gem.slide.tree (kw_gem)</field>
+        <field name="model">kw.gem.slide</field>
+        <field name="arch" type="xml">
+            <tree create="true" default_order='create_date desc'>
+                <field name="name" readonly="1"/>
+                <field name="cassette_id" optional="show" readonly="1"/>
+                <field name="sample_id" optional="show" readonly="1"/>
+                <field name="sample_name_ids" widget="many2many_tags" optional="show" readonly="1"/>
+                <field name="sale_order_id" optional="show" readonly="1"/>
+                <field name="patient_id" readonly="1"/>
+                <field name="additional_barcode" optional="show" readonly="1"/>
+                <field name="examination_id" optional="show" readonly="1"/>
+                <field name="create_uid" optional="show" widget="many2one_avatar_user" string="Created by" readonly="1"/>
+                <field name="create_date" optional="show" string="Creation date" readonly="1"/>
+                <field name="state" optional="show" readonly="0"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="kw_gem_kw_gem_slide_from_kw_gem_cassette_act_window" model="ir.actions.act_window">
+        <field name="name">Slide</field>
+        <field name="res_model">kw.gem.slide</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="kw_gem.cassette_view_kw_gem_slide_tree"/>
+        <field name="domain">[('cassette_id','=',active_id)]</field>
+        <field name="context">{'default_cassette_id': active_id}</field>
+    </record>
+
+    <record id="view_kw_gem_cassette_filter" model="ir.ui.view">
+        <field name="name">kw.gem.cassette.select</field>
+        <field name="model">kw.gem.cassette</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <search string="Cassettes Barcode">
+                <field name="name"
+                   filter_domain="['|', ('name', 'ilike', self), ('additional_barcode', 'ilike', self)]"/>
+                <field name="patient_id" string="Patient" domain="[('name','ilike','patient_id')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_cassette_cassette_tree">
+        <field name="model">kw.gem.cassette</field>
+        <field name="arch" type="xml">
+            <tree create="false" default_order='create_date desc'>
+                <field name="name"/>
+                <field name="sample_id" optional="show"/>
+                <field name="sample_name_ids" widget="many2many_tags" optional="show"/>
+                <field name="sale_order_id" optional="show"/>
+                <field name="patient_id"/>
+                <field name="additional_barcode" optional="show"/>
+                <field name="create_uid" optional="show" widget="many2one_avatar_user" string="Created by"/>
+                <field name="create_date" optional="show" string="Creation Date"/>
+                <field name="state" optional="show"/>
+                <field name="procedure_id" optional="show"/>
+                <field name="start_procedure_time" optional="show"/>
+                <field name="procedure_duration" optional="show"/>
+                <field name="end_procedure_time" optional="show"/>
+                <field name="slide_qty" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_cassette_cassette_form">
+        <field name="model">kw.gem.cassette</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" clickable="1"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="action"
+                                name="%(kw_gem_kw_gem_slide_from_kw_gem_cassette_act_window)d"
+                                icon="fa-cogs" attrs="{'invisible':[('state','=','draft')]}">
+                            <field string="Slide" name="slide_qty"
+                                   widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div name="title_line" style="width: 100%">
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" class="oe_inline"/>
+                            </h1>
+                        </div>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="kw_object_type"/>
+                            <field name="sample_id"/>
+                            <field name="sample_name_ids" widget="many2many_tags" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="sale_order_id"/>
+                            <field name="patient_id"/>
+                            <field name="additional_barcode"/>
+                        </group>
+                        <group>
+                            <field name="create_date" string="Creation Date"/>
+                            <field name="sample_examination_type_ids" invisible="1"/>
+                            <field name="examination_type_ids" widget="many2many_tags"
+                                   domain="[('id', 'in', sample_examination_type_ids)]"
+                                   options="{'no_open': True, 'no_create': True, 'no_quick_create': true}"/>
+                            <field name="sample_part" readonly="0" widget="html"/>
+                            <field name="create_uid" string="Created by"/>
+                            <field name="comment"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Additional Procedure" invisible="0">
+                            <group>
+                                <group>
+                                    <field name="procedure_id" force_save="1"
+                                           options="{'no_open': True, 'no_create': True, 'no_quick_create': true}"
+                                           attrs="{'readonly':['|', ('is_start_procedure','=', True), ('is_end_procedure','=',True)]}"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group>
+                                    <field name="is_start_no_return" invisible="1"/>
+                                    <field name="is_start_procedure" attrs="{'invisible':[('procedure_id','=',False)], 'readonly':[('is_start_no_return','=', True)]}"/>
+                                    <field name="start_procedure_time" attrs="{'invisible':[('is_start_procedure','=',False)]}" force_save="1"/>
+                                    <field name="procedure_duration" force_save="1" attrs="{'invisible':[('is_start_procedure','=',False)]}"/>
+                                </group>
+                                <group>
+                                    <field name="is_end_no_return" invisible="1"/>
+                                    <field name="is_end_procedure" attrs="{'invisible':[('is_start_procedure','=',False)], 'readonly':[('is_end_no_return','=', True)]}"/>
+                                    <field name="end_procedure_time" attrs="{'invisible':[('is_end_procedure','=',False)]}" force_save="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Slides" invisible="0" attrs="{'invisible':[('state','=','draft')]}">
+                            <field name="is_number_of_slides_warning" invisible="1"/>
+<!--                            <group>-->
+                            <table style="margin-bottom: 10px;">
+                                <tr>
+                                    <td style="width: 400px;">
+                                        <span><label for="examination_type_default_id" class="o_form_label font-weight-bold"/></span>
+                                    </td>
+                                    <td style="width: 200px;">
+                                        <span><label for="number_of_slides" class="o_form_label font-weight-bold" string="Number Of Slides To Create"/></span>
+                                    </td>
+                                    <td style="width: 200px;">
+                                        <span></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 400px;">
+                                        <field name="examination_type_default_id"  domain="[('id', 'in', examination_type_ids)]"
+                                           options="{'no_open': True, 'no_create': True, 'no_quick_create': true}" style="width: 370px;"/>
+                                    </td>
+                                    <td style="width: 200px;">
+                                        <field name="number_of_slides" style="width: 50px;"  decoration-danger="is_number_of_slides_warning==True"/>
+                                    </td>
+                                    <td style="width: 200px;">
+                                        <button name="create_slides" type="object" string="Create Slides" class="btn-primary"/>
+                                    </td>
+                                </tr>
+                            </table>
+<!--                                <div class="o_address_format" style="margin-bottom: 10px;">-->
+<!--                                    <label for="examination_type_default_id" class="o_form_label oe_inline font-weight-bold"/>-->
+<!--                                    <field name="examination_type_default_id"  domain="[('id', 'in', examination_type_ids)]" class="oe_inline"-->
+<!--                                           width="440px;" options="{'no_open': True, 'no_create': True, 'no_quick_create': true}"/><br/>-->
+<!--                                    <label for="number_of_slides" class="o_form_label oe_inline font-weight-bold" string="Number Of Slides To Create"/>-->
+<!--                                    <field name="number_of_slides" decoration-danger="is_number_of_slides_warning==True" class="oe_inline" style="margin-left: 1%; margin-right: 1%;"/>-->
+<!--&lt;!&ndash;                                margin-left: 5.3%; margin-right: 2%;"/>&ndash;&gt;-->
+<!--                                    <button name="create_slides" type="object" string="Create Slides" style="padding-left: 10px;" class="btn-primary oe_inline" />-->
+<!--                                </div>-->
+<!--                            </group>-->
+                            <field name="slide_ids">
+                                <tree editable="bottom" create="false" no_open="True">
+                                    <field name="slide_id" string="Slide ID" widget="many2one"/>
+                                    <field name="cassette_id" invisible="1"/>
+                                    <field name="state"/>
+                                    <field name="cassette_examination_type_ids" invisible="1"/>
+                                    <field name="examination_id"
+                                           options="{'no_open': True, 'no_create': True, 'no_quick_create': true}"
+                                           domain="[('id', 'in', cassette_examination_type_ids)]"/>
+                                </tree>
+                            </field>
+                            <button name="add_slide_action" type="object"
+                                    string="Add a Slide"
+                                    class="btn-primary"/>
+                        </page>
+                        <page string="Stage History">
+                            <field name="stage_history_ids" options="{'no_open': true}" readonly="True">
+                                <tree editable="bottom">
+                                    <field name="name" string="Status"/>
+                                    <field name="create_date" string="Stage Setting Date"/>
+                                    <field name="create_uid" string="Last Updated by"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="kw_gem_kw_gem_cassette_act_window" model="ir.actions.act_window">
+        <field name="name">Cassette</field>
+        <field name="res_model">kw.gem.cassette</field>
+        <field name="view_mode">tree,form</field>
+         <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Cassette is not found!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="kw_gem_kw_gem_cassette_menu"
+              action="kw_gem_kw_gem_cassette_act_window"
+              parent="sale.sale_order_menu"
+              name="All Cassettes" sequence="200"/>
+
+    <record id="action_kw_gem_cassette_mass_create_slides" model="ir.actions.server">
+        <field name="name">Create slides</field>
+        <field name="model_id" ref="model_kw_gem_cassette"/>
+        <field name="binding_model_id" ref="model_kw_gem_cassette"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.mass_create_slides()</field>
+    </record>
+
+</odoo>

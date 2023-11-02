@@ -1,0 +1,24 @@
+<odoo>
+    <record id="view_kw_gem_additional_procedures_tree" model="ir.ui.view">
+        <field name="name">kw.gem.additional.procedures.tree (kw_gem)</field>
+        <field name="model">kw.gem.additional.procedures</field>
+        <field name="arch" type="xml">
+            <tree editable="top">
+                <field name="name"/>
+                <field name="name_ge" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="kw_gem_kw_gem_additional_procedures_act_window" model="ir.actions.act_window" >
+        <field name="name">Additional Procedures</field>
+        <field name="res_model">kw.gem.additional.procedures</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem id="kw_gem_additional_procedures_menu"
+              action="kw_gem_kw_gem_additional_procedures_act_window"
+              parent="kw_gem_catalogs_menu"
+              name="Additional Procedures" sequence="600"/>
+
+</odoo>

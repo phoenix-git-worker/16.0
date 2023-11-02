@@ -1,0 +1,63 @@
+<odoo>
+
+    <record id="kw_gem_mass_stage_wizard_view" model="ir.ui.view">
+        <field name="name">kw.gem.mass.stage.wizard.form</field>
+        <field name="model">kw.gem.mass.stage.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group string="From">
+                        <field name="from_stage_id" force_save="1" string="Status"/>
+                    </group>
+                    <group string="To">
+                        <field name="stage_ids" invisible="1"/>
+                        <field name="to_stage_id" string="Status"
+                               options="{'no_open': True, 'no_create': True, 'no_quick_create': true}"
+                               domain="[('id', 'in', stage_ids)]"/>
+                    </group>
+                </group>
+                <footer>
+                    <button type="object" name="confirm_assign" string="Confirm" class="oe_highlight"/>
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_sale_order_change_state" model="ir.actions.act_window">
+        <field name="name">Change Status</field>
+        <field name="res_model">kw.gem.mass.stage.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_sale_order"/>
+        <field name="binding_view_types">list</field>
+    </record>
+
+    <record id="action_kw_gem_cassette_change_state" model="ir.actions.act_window">
+        <field name="name">Change Status</field>
+        <field name="res_model">kw.gem.mass.stage.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_kw_gem_cassette"/>
+        <field name="binding_view_types">list</field>
+    </record>
+
+    <record id="action_kw_gem_slide_change_state" model="ir.actions.act_window">
+        <field name="name">Change Status</field>
+        <field name="res_model">kw.gem.mass.stage.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_kw_gem_slide"/>
+        <field name="binding_view_types">list</field>
+    </record>
+
+    <record id="action_kw_gem_sample_change_state" model="ir.actions.act_window">
+        <field name="name">Change Status</field>
+        <field name="res_model">kw.gem.mass.stage.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_kw_gem_sample"/>
+        <field name="binding_view_types">list</field>
+    </record>
+
+</odoo>

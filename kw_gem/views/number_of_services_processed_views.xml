@@ -1,0 +1,39 @@
+<odoo>
+
+    <record id="view_kw_gem_number_of_services_tree" model="ir.ui.view">
+        <field name="name">kw.gem.number.services.tree (kw_gem)</field>
+        <field name="model">kw.gem.services.processed</field>
+        <field name="arch" type="xml">
+            <tree>
+                <header>
+                    <button name="add_param_action" type="object"
+                            string="Add Parameters"/>
+                </header>
+                <field name="date"/>
+                <field name="order_id"/>
+                <field name="exam_type_code"/>
+                <field name="product_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_kw_gem_number_of_services_form" model="ir.ui.view">
+        <field name="name">kw.gem.number.services.form (kw_gem)</field>
+        <field name="model">kw.gem.services.processed</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="date"/>
+                        <field name="order_id"/>
+                        <field name="exam_type_code"/>
+                        <field name="product_id"/>
+                        <button name="add_param_action" type="object"
+                            string="Add Parameters"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

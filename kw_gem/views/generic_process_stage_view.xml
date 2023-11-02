@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="generic_business_process_generic_process_stage_form_view" model="ir.ui.view">
+        <field name="name">generic.process.stage.form (generic_business_process)</field>
+        <field name="model">generic.process.stage</field>
+        <field name="inherit_id" ref="generic_business_process.generic_process_stage_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='stage_type_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='stage_type_id']" position="before">
+                <field name="kw_model" invisible="1"/>
+                <field name="is_mass_change_status" string="Mass Change" invisible="0"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='page_info']" position="after">
+                <page string="Cases State" name="sale_state" attrs="{'invisible':[('kw_model','!=','sale.order')]}">
+                    <group>
+                        <group>
+                            <field name="sale_state1"/>
+                            <field name="sale_state2"/>
+                        </group>
+                    </group>
+                </page>
+                <page string="Sample State" name="sale_state" attrs="{'invisible':[('kw_model','!=','kw.gem.sample')]}">
+                    <group>
+                        <group>
+                            <field name="sample_state"/>
+                        </group>
+                    </group>
+                </page>
+                <page string="Cassette State" name="sale_state" attrs="{'invisible':[('kw_model','!=','kw.gem.cassette')]}">
+                    <group>
+                        <group>
+                            <field name="cassette_state"/>
+                        </group>
+                    </group>
+                </page>
+                <page string="Slide State" name="slide_state" attrs="{'invisible':[('kw_model','!=','kw.gem.slide')]}">
+                    <group>
+                        <group>
+                            <field name="slide_state"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

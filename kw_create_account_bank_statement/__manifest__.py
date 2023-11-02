@@ -1,11 +1,12 @@
 {
     'name': 'Create account bank statement',
-    'version': '16.0.1.0.0',
+    'version': '16.0.1.0.1',
     'license': 'OPL-1',
     'category': 'Extra Addons',
 
     'summary': """
-        An extension module that allows create new lines in account.bank.statement form view
+        An extension module that allows create new lines
+            in account.bank.statement form view
     """,
     'author': 'Kitworks Systems',
     'website': 'https://kitworks.systems/',

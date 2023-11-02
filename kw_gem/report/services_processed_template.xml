@@ -1,0 +1,101 @@
+<odoo>
+    <record id="kw_paperformat_lowmargin" model="report.paperformat">
+      <field name="name">European A4</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+
+    </record>
+
+    <report id="kw_gem_services_sucessed_action_report"
+            string="Number of Services Processed"
+            model="kw.gem.services.processed.wizard"
+            report_type="qweb-html"
+            file="kw_gem.kw_gem_number_of_services_processed_report_template"
+            name="kw_gem.kw_gem_number_of_services_processed_report_template"
+            paperformat="kw_paperformat_lowmargin"
+            print_report_name="'Report Number of Services Processed"/>
+
+    <template id="kw_gem_number_of_services_processed_report_template">
+        <t t-call="web.basic_layout">
+            <style>
+                    body {
+                    position: absolute;
+                    height: 1117px;
+                    left: 0;
+                    right: 0;
+                    font-family: Verdana, Arial,sans-serif;
+                    font-size: 13px;
+                    }
+                    #table_ th {
+                    color:black;
+                    border-top: 1px solid #000000;
+                    border-bottom: 1px solid #000000;
+                    font-size: 50px;
+                    height: 40;
+                    }
+                    #table_ td {
+                    padding: 11px;
+                    vertical-align: top;
+                    height: 40;
+                    border-bottom: 1px solid #000000;
+                    }
+                    #table_ th, #table_ td {
+                    padding: 10px;
+                    border-left: 1px solid #000000;
+                    border-right: 1px solid #000000;
+                    }
+                    #table_ {
+                    border-collapse: separate;
+                    border-spacing: 8px 3px;
+                    margin-top: 10px;
+                    font-family: Verdana, Arial,sans-serif;
+                    font-size:13px;
+                    }
+            </style>
+            <div id="table_">
+                    <body>
+                         <table cellspacing="9" table-layout="fixed">
+                             <thead>
+                                <tr>
+                                    <th style="font-size: 13px; font-weight: bold; ">Type</th>
+                                    <t t-foreach ="dict_dates" t-as="date" t-key="date">
+                                        <th style="font-size: 13px; width: 100%" t-esc="date"></th>
+                                    </t>
+                                </tr>
+                             </thead>
+                            <t t-foreach="data" t-as="key">
+                                <tr>
+                                    <td t-esc="key"></td>
+                                    <t t-foreach="dict_dates" t-as="my_date" t-key="my_date">
+                                        <td align="center" t-esc="data.get(key).get(my_date,0)"></td>
+                                    </t>
+                                </tr>
+                            </t>
+                            <tfoot>
+                                <tr>
+                                    <th style="font-size: 13px; font-weight: bold;">Total</th>
+                                    <t t-foreach="dict_dates" t-as="my_date" t-key="my_date">
+                                        <th style="font-size: 13px; font-weight: bold; text-align: center" t-esc="dict_dates.get(my_date,0)"></th>
+                                    </t>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </body>
+                </div>
+        </t>
+    </template>
+
+<report id="kw_gem_services_processed_report_xlsx"
+            string="Number of Services Processed"
+            model="kw.gem.services.processed.wizard"
+            report_type="xlsx"
+            file="kw_gem.services_processed_report_xlsx"
+            name="kw_gem.services_processed_report_xlsx"
+            print_report_name="'Report Number of Services Processed"/>
+</odoo>

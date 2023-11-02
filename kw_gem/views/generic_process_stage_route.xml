@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="kw_gem_generic_process_generic_process_stage_route_form">
+        <field name="name">generic.process.stage.route.form (generic_business_process)</field>
+        <field name="model">generic.process.stage.route</field>
+        <field name="inherit_id" ref="generic_business_process.view_generic_process_stage_route_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='allowed_group_ids']" position="after">
+                <field name="is_partner_sale_order"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

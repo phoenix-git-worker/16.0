@@ -1,0 +1,14 @@
+<odoo noupdate="1">
+    <record id="kw_gem_sample_name_1" model="kw.gem.sample.name">
+        <field name="name">Sample Name 1</field>
+    </record>
+    <record id="kw_gem_sample_name_2" model="kw.gem.sample.name">
+        <field name="name">Sample Name 2</field>
+    </record>
+    <record id="kw_gem_sample_name_3" model="kw.gem.sample.name">
+        <field name="name">Sample Name 3</field>
+    </record>
+    <record id="kw_gem_sample_name_4" model="kw.gem.sample.name">
+        <field name="name">Sample Name 4</field>
+    </record>
+</odoo>

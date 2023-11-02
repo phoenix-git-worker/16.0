@@ -1,0 +1,25 @@
+<odoo>
+    <record id="view_kw_gem_examination_type_tree" model="ir.ui.view">
+        <field name="name">kw.gem.examination.type.tree (kw_gem)</field>
+        <field name="model">kw.gem.examination.type</field>
+        <field name="arch" type="xml">
+            <tree editable="top">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="name_ge" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="kw_gem_kw_gem_examination_type_act_window" model="ir.actions.act_window" >
+        <field name="name">Examination Types</field>
+        <field name="res_model">kw.gem.examination.type</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem id="kw_gem_kw_gem_examination_type_menu"
+              action="kw_gem_kw_gem_examination_type_act_window"
+              parent="kw_gem_catalogs_menu"
+              name="Examination Types" sequence="300"/>
+
+</odoo>

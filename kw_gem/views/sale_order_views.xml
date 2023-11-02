@@ -1,0 +1,594 @@
+<odoo>
+
+    <record id="sale.action_view_sale_advance_payment_inv" model="ir.actions.act_window">
+        <field name="name">Create invoices</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.advance.payment.inv</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="sale.model_sale_order" />
+        <field name="binding_view_types">list</field>
+        <field name="groups_id" eval="[(4, ref('kw_gem.group_hide'))]"/>
+    </record>
+
+    <record id="kw_gem_kw_gem_sample_from_sale_order_act_window" model="ir.actions.act_window">
+        <field name="name">Samples</field>
+        <field name="res_model">kw.gem.sample</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('sale_order_id','=',active_id)]</field>
+        <field name="context">{'default_sale_order_id': active_id}</field>
+    </record>
+
+    <record id="kw_gem_kw_gem_cassette_from_sale_order_act_window" model="ir.actions.act_window">
+        <field name="name">Cassettes</field>
+        <field name="res_model">kw.gem.cassette</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('sample_id.sale_order_id','=',active_id)]</field>
+        <field name="context">{'default_sale_order_id': active_id}</field>
+    </record>
+
+    <record id="kw_gem_kw_gem_slide_from_sale_order_act_window" model="ir.actions.act_window">
+        <field name="name">Slides</field>
+        <field name="res_model">kw.gem.slide</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('cassette_id.sample_id.sale_order_id','=',active_id)]</field>
+        <field name="context">{'default_sale_order_id': active_id}</field>
+    </record>
+
+    <record id="kw_gem_sale_order_form" model="ir.ui.view">
+        <field name="name">sale.order.form (kw_gem)</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='order_details']/div[hasclass('o_td_label')]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//group[@name='order_details']/field[@name='date_order']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//group[@name='order_details']/field[@name='date_order']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly':[('is_junior_doctor_readonly','=', True)]}</attribute>
+            </xpath>
+            <field name="state" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="state" position="after">
+                <field name="kw_stage" widget="statusbar" clickable="1"/>
+            </field>
+            <xpath expr="//form//sheet/div[hasclass('oe_button_box')]"
+                   position="inside">
+                <button class="oe_stat_button" type="action"
+                        name="%(kw_gem_kw_gem_sample_act_window)d"
+                        icon="fa-cogs">
+                    <field string="Samples" name="kw_sample_qty"
+                           widget="statinfo"/>
+                </button>
+                <button class="oe_stat_button" type="action"
+                        name="%(kw_gem_kw_gem_cassette_from_sale_order_act_window)d"
+                        icon="fa-cogs">
+                    <field string="Cassettes" name="kw_cassette_qty"
+                           widget="statinfo"/>
+                </button>
+                <button class="oe_stat_button" type="action"
+                        name="%(kw_gem_kw_gem_slide_from_sale_order_act_window)d"
+                        icon="fa-cogs">
+                    <field string="Slides" name="kw_slide_qty"
+                           widget="statinfo"/>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <button type="action"
+                    name="%(kw_gem_report_sale_order_label)d"
+                    string="Print barcode"
+                    class="kw-gem-right-button btn-primary"
+                    invisible="1">
+                </button>
+            </xpath>
+            <xpath expr="//form/sheet/group/group/field[@name='partner_id']"
+                   position="before">
+                <field name="doctor_ids" invisible="1"/>
+                <field name="kw_object_type"/>
+                <field name="kw_payer" invisible="1"/>
+                <field name="kw_order_type" attrs="{'readonly':[('is_junior_doctor_readonly','=', True)]}"/>
+                <field name="order_line_utility" invisible="1"/>
+                <field name="kw_patient_id"
+                       attrs="{'readonly':[('is_junior_doctor_readonly','=', True)]}"
+                       required="1" options="{'no_quick_create': true}"/>
+                <field name="kw_patient_vat"/>
+            </xpath>
+            <xpath expr="//form/sheet/group/group/field[@name='partner_id']"
+                   position="attributes">
+                <attribute name="string">Main payer</attribute>
+                <attribute name="options">{'no_quick_create': true}</attribute>
+                <attribute name="context">{'default_company_type': 'company'}</attribute>
+                <attribute name="attrs">
+                    {'readonly':['|',('is_multiple_payers','=',True), ('is_junior_doctor_readonly','=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//form/sheet/group/group/field[@name='partner_id']"
+                   position="after">
+                <field name="kw_agreement_ids" invisible="1"/>
+                <field name="kw_agreement_id"
+                       required="1"
+                       options="{'no_open': False, 'no_create_edit': False, 'no_quick_create': True}"
+                       attrs="{'readonly':['|',('is_multiple_payers','=', True), ('is_junior_doctor_readonly','=', True)],
+                       'invisible': [('partner_id','=', False)]}"/>
+                <field name="is_multiple_payers" invisible="1"/>
+                <field name="is_split_by_payers" invisible="1"/>
+                <field name="kw_is_show_update_pricelist" invisible="1"/>
+                <field name="examination_type_ids" invisible="1"/>
+            </xpath>
+            <xpath expr="//button[@name='action_update_prices']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+            </xpath>
+
+            <xpath expr="//form/sheet/group" position="inside">
+                <button name="add_payers_action" type="object"
+                    string="Add Payer" style="padding: 0px, margin-left: 5px;"
+                    class="oe_inline btn-primary"/>
+                <button name="split_payment_by_payers" type="object"
+                        string="Split payment by payers"
+                        class="oe_inline kw-gem-right-button-2 btn-primary"
+                        attrs="{'invisible':['|', ('is_multiple_payers','=',False), ('is_split_by_payers','=',True)]}"/>
+                <button name="collect_order_line" type="object"
+                        string="Cancel Split"
+                        class="oe_inline kw-gem-right-button-2 btn-primary"
+                        attrs="{'invisible':['|', ('is_multiple_payers','=',False), ('is_split_by_payers','!=',True)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='date_order']" position="after">
+                <field name="kw_conclusion_completion_date"/>
+                <field name="kw_archive_date"/>
+            </xpath>
+            <xpath expr="//field[@name='validity_date']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='payment_term_id']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//page[@name='optional_products']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='kw_archive_date']" position="after">
+                <field name="kw_payment_method_id" required="1" options="{'no_create': true, 'no_quick_create': true, 'no_open': true}"
+                       attrs="{'readonly':['|', ('is_multiple_payers','=',True), ('is_junior_doctor_readonly','=', True)]}"
+                       domain="[('is_company', '=', 'partner_id.is_company')]"/>
+            </xpath>
+            <xpath expr="//field[@name='pricelist_id']"
+                   position="attributes">
+                <attribute name="options">{'no_open':False,'no_create': True}</attribute>
+                <attribute name="required">1</attribute>
+<!--                <attribute name="groups">kw_gem.group_kw_gem_sale_manager,sales_team.group_sale_salesman,-kw_gem.group_kw_gem_laboratory_assistant,-kw_gem.group_kw_gem_junior_doctor,kw_gem.group_kw_gem_financier</attribute>-->
+            </xpath>
+
+<!--            <xpath expr="//label[@for='pricelist_id']" position="attributes">-->
+<!--                <attribute name="groups">kw_gem.group_kw_gem_sale_manager,sales_team.group_sale_salesman,-kw_gem.group_kw_gem_laboratory_assistant,-kw_gem.group_kw_gem_junior_doctor,kw_gem.group_kw_gem_financier</attribute>-->
+<!--            </xpath>-->
+
+            <xpath expr="//form/sheet/notebook" position="after">
+                <field name="kw_is_research" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']" position="before">
+                <group>
+                    <h3>Services</h3>
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//tree//field[@name='tax_id']" position="attributes">
+                <attribute name="groups">kw_gem.group_kw_gem_sale_manager,base.group_system</attribute>
+                <attribute name="optional">hidden</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']" position="after">
+                <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                    <field name="tax_totals" widget="account-tax-totals-field" nolabel="1" colspan="2"
+                           modifiers="{&quot;readonly&quot;: true}" style="margin-right: 5%;"
+                           groups="kw_gem.group_kw_gem_sale_manager,kw_gem.group_kw_gem_doctor_director,sales_team.group_sale_salesman"/>
+                </group>
+            </xpath>
+            <xpath expr="//group[@name='note_group']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//group[@name='sale_total']" position="after">
+                <group>
+                    <group>
+                        <field name="kw_sending_organization" options="{'no_create': true, 'no_quick_create': true}" attrs="{'readonly':[('is_junior_doctor_readonly','=', True)]}"/>
+                    </group>
+                    <group>
+                        <field name="kw_sending_doctor" attrs="{'readonly':[('is_junior_doctor_readonly','=', True)]}" options="{'no_create': true, 'no_quick_create': true}"/>
+                    </group>
+                </group>
+
+                <h3>Received Materials</h3>
+                <field name="kw_is_total_container" invisible="1"/>
+                <field name="kw_is_container" invisible="1"/>
+                <field name="kw_container_ids" attrs="{'readonly':[('is_junior_doctor_readonly','=', True)]}" widget="section_and_note_one2many"  mode="tree">
+                    <tree no_open="true" create="false" delete="true" edit="false">
+                        <field name="kw_is_total_container" invisible="1"/>
+                        <field name="kw_is_container" invisible="1"/>
+                        <field name="container_name_ids" widget="many2many_tags"/>
+                        <field name="container_type_ids" widget="many2many_tags"/>
+                        <field name="examination_type_ids" widget="many2many_tags"/>
+                        <field name="carriers_type_id"/>
+                        <field name="carriers_number_id"/>
+                        <field name="sale_order_id" invisible="1"/>
+                        <field name="is_create_sample" invisible="1"/>
+                        <button name="create_sample" type="object"
+                                string="Add Sample"
+                                class="kw-gem-button btn-primary"
+                                groups="kw_gem.group_kw_gem_sample_slide_cassette_admin1,base.group_system"
+                                attrs="{'invisible':[('is_create_sample','=', False)]}"/>
+                    </tree>
+                </field>
+                <div>
+                    <button name="add_container_action" type="object" style="padding: 0px, margin-left: 0px;"
+                            class="oe_inline btn-primary"
+                            attrs="{'invisible':[('is_junior_doctor_readonly','=', True)]}" >
+                            Add Received Material</button>
+                </div>
+                    <div style="padding-top:5">
+                        <group>
+                        <group>
+                        <group>
+<!--                            <label for="kw_total_containers" class=" oe_right font-weight-bold"/>-->
+                            <field name="kw_total_containers" class="oe_inline" style="width: 25%;"/>
+                        </group>
+                        <group>
+<!--                            <label for="kw_total_cassettes" class="o_form_label oe_right font-weight-bold"/>-->
+                            <field name="kw_total_cassettes" class="oe_inline" style="width: 25%;"/>
+                        </group>
+                        </group>
+                        <group>
+<!--                            <label for="kw_total_slides" class="o_form_label oe_right font-weight-bold"/>-->
+                            <field name="kw_total_slides" class="oe_inline" style="width: 25%;"/>
+                        </group>
+                        </group>
+                    </div>
+                <field name="note"/>
+                <group name="note_group" position="move"/>
+            </xpath>
+
+            <xpath expr="//create[@name='add_product_control']" position="attributes">
+                <attribute name="string">Add a service</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']" position="attributes">
+                <attribute name="context">{'default_order_partner_id':partner_id, 'default_order_pricelist_id':pricelist_id}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//tree//field[@name='product_id']" position="attributes">
+                <attribute name="string">Service</attribute>
+                <attribute name="domain">['&amp;','&amp;',('sale_ok', '=', True), ('id', 'in', kw_product_ids), ('id', 'not in', kw_existed_product_ids)]</attribute>
+                <attribute name="options">{'no_create': True}</attribute>
+                <attribute name="attrs">{'readonly':['|', ('is_split_by_payers','=', True), ('product_updatable', '=', False)], 'required': [('display_type', '=', False)]}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']//tree//field[@name='product_uom']" position="attributes">
+                <attribute name="attrs">{'required': [('display_type', '=', False)], 'readonly':['|', ('is_split_by_payers','=', True), ('product_updatable', '=', False)]}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']//tree//field[@name='price_unit']" position="attributes">
+                <attribute name="attrs">{'readonly':['|', ('is_split_by_payers','=', True), ('qty_invoiced', '&gt;', 0)]}</attribute>
+<!--                <attribute name="groups">kw_gem.group_kw_gem_sale_manager,kw_gem.group_kw_gem_doctor_director,base.group_system</attribute>-->
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']//tree//field[@name='discount']" position="attributes">
+                <attribute name="invisible">1</attribute>
+                <attribute name="digits">[25,6]</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//tree//field[@name='discount']" position="after">
+                <field name="kw_discount" widget="kw_save_onchange" groups="kw_gem.group_kw_gem_sale_manager,kw_gem.group_kw_gem_doctor_director,base.group_system"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//tree//field[@name='discount']" position="attributes">
+                <attribute name="groups">kw_gem.group_kw_gem_sale_manager,kw_gem.group_kw_gem_doctor_director,base.group_system</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//tree//field[@name='price_total']" position="attributes">
+                <attribute name="groups">kw_gem.group_kw_gem_sale_manager,kw_gem.group_kw_gem_doctor_director,base.group_system</attribute>
+            </xpath>
+            <xpath expr="/form" position="attributes">
+                <attribute name="js_class">kw_form_sale_order_save</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//tree//field[@name='tax_id']" position="after">
+                <field name="kw_discount_amount" string="Discount, amount" widget="kw_save_onchange"
+                       groups="kw_gem.group_kw_gem_sale_manager,kw_gem.group_kw_gem_doctor_director,base.group_system"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//tree//field[@name='tax_id']" position="after">
+                <field name="order_partner_ids" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//tree//field[@name='tax_id']" position="after">
+                <field name="is_split_by_payers" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//tree//field[@name='tax_id']" position="after">
+                <field name="is_product_uom_qty_warning" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//tree//field[@name='tax_id']" position="after">
+                <field name="kw_existed_product_ids" invisible="1" widget="many2many_tags"/>
+                <field name="kw_product_ids" invisible="1"/>
+                <field name="order_pricelist_id" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']//tree//field[@name='product_uom_qty']" position="after">
+                <field name="kw_product_qty" decoration-danger="is_product_uom_qty_warning==True"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//tree//field[@name='price_unit']" position="after">
+                <field name="subtotal_before_discount" decoration-danger="is_product_uom_qty_warning==True"/>
+<!--                       groups="kw_gem.group_kw_gem_sale_manager,kw_gem.group_kw_gem_doctor_director,base.group_system"/>-->
+            </xpath>
+            <xpath expr="//field[@name='order_line']//tree//field[@name='product_id']" position="after">
+                <field name="order_partner_id" required="1" attrs="{'readonly':[('is_split_by_payers','=', True)]}" force_save="1" string="Payer" domain="[('id', 'in', order_partner_ids)]"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']//tree//field[@name='product_uom_qty']" position="attributes">
+                <attribute name="optional">hide</attribute>
+                <attribute name="string">Quantity (Accurate)</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//tree//field[@name='qty_invoiced']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//tree//field[@name='qty_delivered']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+<!--            <xpath expr="//field[@name='order_line']//tree//field[@name='kw_discount']" position="after">-->
+<!--                <attribute name="style">"width: 5px;"</attribute>-->
+<!--            </xpath>-->
+            <xpath expr="//field[@name='order_line']//tree//field[@name='name']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']" position="attributes">
+                <attribute name="widget">section_and_note_one2many</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//tree//field[@name='price_subtotal']" position="after">
+                <field name="name" string=" " width="30px;" readonly="1" attrs="{'invisible':[('display_type','not in', ['line_note', 'line_section'])], 'readonly':[('is_split_by_payers','=', True)]}"/>
+            </xpath>
+
+            <xpath expr="//control/create[@name='add_note_control']" position="replace">
+            </xpath>
+            <xpath expr="//control/create[@name='add_section_control']" position="replace">
+            </xpath>
+
+<!--            <xpath expr="//group/field[@name='name']" position="attributes">-->
+<!--                <attribute name="style">weight: 300px;</attribute>-->
+<!--            </xpath>-->
+            <xpath expr="//field[@name='order_line']" position="attributes">
+                <attribute name="options">{'no_open': True}</attribute>
+                <attribute name="attrs">
+                    {'readonly':[('is_sale_user_readonly','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//form/sheet/notebook/page" position="after">
+                <page name="samples" string="Samples"
+                      attrs="{'invisible':['|', ('kw_is_research','=',False), ('kw_stage','in',['draft', 'confirm'])]}"
+                      groups="kw_gem.group_kw_gem_sample_slide_cassette_user1,sales_team.group_sale_salesman">
+                    <field name="kw_sample_ids">
+                        <tree editable="bottom" create="false">
+                            <field name="sample_id" string="Sample ID" widget="many2one"/>
+                            <field name="sample_name_ids" widget="many2many_tags" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="sample_type_ids" widget="many2many_tags" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="sale_order_id" invisible="1"/>
+                            <field name="state"/>
+                            <field name="examination_type_ids" widget="many2many_tags" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="cassette_qty"/>
+                            <field name="examination_type_default_id" invisible="1"/>
+                        </tree>
+                    </field>
+                    <button name="add_sample_action" type="object"
+                            string="Add a Sample"
+                            groups="kw_gem.group_kw_gem_sample_slide_cassette_admin1,base.group_system"
+                            class="btn-primary"/>
+                </page>
+                <page name="data_for_payroll" string="Data for Payroll"
+                      attrs="{'invisible':[('kw_stage','in',['draft', 'confirm'])]}">
+                    <field name="kw_payroll_ids">
+                        <tree editable="bottom" create="true" delete="false">
+                            <field name="name" invisible="1"/>
+                            <field name="sale_order_id" invisible="1"/>
+                            <field name="doctor_ids" invisible="1"/>
+                            <field name="service_id" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="doctor1_id" string="Doctor 1" options="{'no_open': True, 'no_create': True}" domain="[('id', 'in', doctor_ids)]"/>
+                            <field name="doctor2_id" string="Doctor 2" options="{'no_open': True, 'no_create': True}" domain="[('id', 'in', doctor_ids)]"/>
+                            <field name="code_id" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="patient_id" optional="hide" options="{'no_open': True, 'no_create': True}"/>
+                        </tree>
+                    </field>
+                </page>
+                <page name="stage_history" string="Stage History">
+                    <field name="kw_stage_ids">
+                        <tree editable="bottom">
+                            <field name="sale_order_id" invisible="1"/>
+                            <field name="name"/>
+                            <field name="stage_setting_date"/>
+                            <field name="write_uid"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+            <xpath expr="//notebook/page[@name='order_lines']" position="after">
+                <page name='payers' string="Payers"
+                      groups="kw_gem.group_kw_gem_sale_manager,kw_gem.group_kw_gem_doctor_director,sales_team.group_sale_salesman"
+                      attrs="{'invisible':[('is_multiple_payers','=',False)]}">
+                    <field name="kw_order_payment_ids" options="{'no_open': true}">
+                        <tree editable="bottom" create="false" delete="false">
+                            <field name="sale_order_id" invisible="1"/>
+                            <field name="partner_id"/>
+                            <field name="payer_agreement_id"/>
+                            <field name="share"/>
+                            <field name="discount"/>
+                            <field name="kw_payment_method_id"/>
+                            <field name="is_main_payer"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+             <xpath expr="//field[@name='user_id']" position="after">
+                <field name="kw_responsible_assistant"
+                       options="{'no_create': true, 'no_quick_create': true, 'no_open': true}"/>
+             </xpath>
+             <xpath expr="//field[@name='kw_responsible_assistant']" position="after">
+                <field name="kw_conclusion_started_by"
+                       options="{'no_create': true, 'no_quick_create': true, 'no_open': true}"/>
+             </xpath>
+             <xpath expr="//field[@name='kw_conclusion_started_by']" position="after">
+                <field name="kw_conclusion_completed_by"
+                       options="{'no_create': true, 'no_quick_create': true, 'no_open': true}"/>
+             </xpath>
+
+            <xpath expr="//form/sheet/group" position="inside">
+                <field name="is_junior_doctor_readonly" invisible="1"/>
+                <field name="is_sale_user_readonly" invisible="1"/>
+                <field name="is_1_office_administrator_readonly" invisible="1"/>
+                <field name="is_registrar_readonly" invisible="1"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='optional_products']" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </xpath>
+            <xpath expr="//page[@name='other_information']//field[@name='user_id']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly':[('is_registrar_readonly','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//page[@name='other_information']//field[@name='team_id']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly':[('is_registrar_readonly','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//page[@name='other_information']//field[@name='client_order_ref']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly':[('is_registrar_readonly','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//page[@name='other_information']//field[@name='tag_ids']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly':[('is_registrar_readonly','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//page[@name='other_information']//field[@name='commitment_date']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly':[('is_registrar_readonly','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//page[@name='other_information']//field[@name='origin']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly':[('is_registrar_readonly','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//page[@name='other_information']//field[@name='campaign_id']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly':[('is_registrar_readonly','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//page[@name='other_information']//field[@name='medium_id']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly':[('is_registrar_readonly','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//page[@name='other_information']//field[@name='source_id']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly':[('is_registrar_readonly','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//notebook/page[@name='customer_signature']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="kw_gem_view_quotation_tree_with_onboarding" model="ir.ui.view">
+        <field name="name">sale.order.tree (kw_gem)</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="replace">
+                <tree class="o_sale_order" sample="1" decoration-info="state in ['draft', 'sent']" decoration-muted="state == 'cancel'">
+                    <field name="name" string="Number" readonly="1" decoration-bf="1"/>
+                    <field name="kw_order_type" readonly="1" optional="show"/>
+                    <field name="kw_patient_id" readonly="1"/>
+                    <field name="kw_patient_vat" readonly="1"/>
+                    <field name="kw_payer" invisible="1"/>
+                    <field name="partner_id" readonly="1" string="Main Payer" optional="show"/>
+                    <field name="kw_product_examination_type_names" readonly="1" optional="show"/>
+                    <field name="date_order" string="Order Date" readonly="1" optional="show"/>
+                    <field name="kw_conclusion_completion_date" readonly="1" optional="show"/>
+                    <field name="kw_archive_date"  readonly="1" optional="show"/>
+                    <field name="kw_stage" readonly="0" optional="show"/>
+                    <field name="amount_total" sum="Total Tax Included" widget="monetary" decoration-bf="1" optional="show"
+                           groups="kw_gem.group_kw_gem_sale_manager,kw_gem.group_kw_gem_doctor_director,sales_team.group_sale_salesman"/>
+                    <field name="user_id" widget="many2one_avatar_user" readonly="1" optional="show"/>
+                    <field name="kw_sample_qty" readonly="1" optional="show"/>
+                    <field name="kw_service_names" readonly="1" optional="show"/>
+                    <field name="commitment_date" widget="date" optional="hide" invisible="1"/>
+                    <field name="expected_date" widget="date" optional="hide" invisible="1"/>
+                    <field name="activity_ids" widget="list_activity" optional="show" invisible="1"/>
+                    <field name="team_id" optional="hide" invisible="1"/>
+                    <field name="tag_ids" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}" invisible="1"/>
+                    <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1" invisible="1"/>
+                    <field name="amount_untaxed" sum="Total Tax Excluded" widget="monetary" optional="hide" invisible="1"/>
+                    <field name="amount_tax" sum="Tax Total" widget="monetary" optional="hide" invisible="1"/>
+                    <field name="state" decoration-success="state == 'sale' or state == 'done'"
+                           decoration-info="state == 'draft' or state == 'sent'" widget="badge" optional="show" invisible="1"/>
+                    <field name="invoice_status" optional="hide" invisible="1"/>
+                    <field name="message_needaction" invisible="1"/>
+                    <field name="currency_id" invisible="1"/>
+                </tree>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="kw_gem_view_order_tree" model="ir.ui.view">
+        <field name="name">sale.view_order_tree.tree (kw_gem)</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="replace">
+                <tree class="o_sale_order" sample="1" decoration-info="state in ['draft', 'sent']" decoration-muted="state == 'cancel'">
+                    <field name="name" string="Number" readonly="1" decoration-bf="1"/>
+                    <field name="kw_order_type" readonly="1" optional="show"/>
+                    <field name="kw_patient_id" readonly="1"/>
+                    <field name="kw_patient_vat" readonly="1"/>
+                    <field name="partner_id" readonly="1" string="Main Payer" optional="show"/>
+                    <field name="kw_product_examination_type_names" readonly="1" optional="show"/>
+                    <field name="date_order" string="Order Date" readonly="1" optional="show"/>
+                    <field name="kw_conclusion_completion_date" readonly="1" optional="show"/>
+                    <field name="kw_archive_date"  readonly="1" optional="show"/>
+                    <field name="kw_stage" readonly="0" optional="show"/>
+                    <field name="amount_total" sum="Total Tax Included" widget="monetary" decoration-bf="1" optional="show"
+                           groups="kw_gem.group_kw_gem_sale_manager,kw_gem.group_kw_gem_doctor_director,sales_team.group_sale_salesman"/>
+                    <field name="user_id" widget="many2one_avatar_user" readonly="1" optional="show"/>
+                    <field name="kw_sample_qty" readonly="1" optional="show"/>
+                    <field name="commitment_date" widget="date" optional="hide" invisible="1"/>
+                    <field name="expected_date" widget="date" optional="hide" invisible="1"/>
+                    <field name="activity_ids" widget="list_activity" optional="show" invisible="1"/>
+                    <field name="team_id" optional="hide" invisible="1"/>
+                    <field name="tag_ids" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}" invisible="1"/>
+                    <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1" invisible="1"/>
+                    <field name="amount_untaxed" sum="Total Tax Excluded" widget="monetary" optional="hide" invisible="1"/>
+                    <field name="amount_tax" sum="Tax Total" widget="monetary" optional="hide" invisible="1"/>
+                    <field name="state" decoration-success="state == 'sale' or state == 'done'"
+                           decoration-info="state == 'draft' or state == 'sent'" widget="badge" optional="show" invisible="1"/>
+                    <field name="invoice_status" optional="hide" invisible="1"/>
+                    <field name="message_needaction" invisible="1"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="invoice_status"/>
+                    <field name="kw_service_names" readonly="1" optional="show"/>
+                </tree>
+            </xpath>
+        </field>
+    </record>
+
+<!--    <record id="kw_gem_view_sales_order_filter" model="ir.ui.view">-->
+<!--        <field name="name">sale.order.list.select</field>-->
+<!--        <field name="model">sale.order</field>-->
+<!--        <field name="priority" eval="15"/>-->
+<!--        <field name="inherit_id"-->
+<!--               ref="sale.view_sales_order_filter"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//search" position="inside">-->
+<!--                <filter string="Payer" name="kw_order_payment_ids" domain="[('partner_id', 'ilike', self),]" />-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+
+    <record id="kw_gem_view_sales_order_filter" model="ir.ui.view">
+        <field name="name">kw.gem.sale.order.search</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="priority" eval="16"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search/field[@name='partner_id']" position="before">
+                <field name="kw_patient_id" string="Patient" filter_domain="[('kw_patient_id', 'ilike', self)]"/>
+            </xpath>
+            <xpath expr="//search/field[@name='kw_patient_id']" position="after">
+                <field name="kw_patient_vat" string="Patient ID" filter_domain="[('kw_patient_vat', 'ilike', self)]"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

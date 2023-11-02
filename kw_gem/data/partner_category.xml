@@ -1,0 +1,15 @@
+<odoo noupdate="1">
+
+    <record id="kw_gem_partner_category_individual" model="res.partner.category">
+        <field name="name">Individual</field>
+        <field name="active" eval="1"/>
+    </record>
+
+    <record id="kw_gem_partner_category_external_doctor" model="res.partner.category">
+        <field name="name">External Doctor</field>
+        <field name="parent_id" ref="kw_gem.kw_gem_partner_category_individual"/>
+        <field name="is_external_doctor" eval="1"/>
+        <field name="active" eval="1"/>
+    </record>
+
+</odoo>

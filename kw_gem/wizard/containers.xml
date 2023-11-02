@@ -1,0 +1,31 @@
+<odoo>
+    <record id="kw_gem_kw_container_wizard_views_form"
+            model="ir.ui.view">
+        <field name="name">kw.containers.wizard.form</field>
+        <field name="model">kw.containers.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group context="{'default_sale_order_id': sale_order_id,}">
+                        <field name="container_name_ids" widget="many2many_tags" options="{'no_create': true, 'no_quick_create': true,}"/>
+                        <field name="container_type_ids" widget="many2many_tags" options="{'no_create': true, 'no_quick_create': true,}"/>
+                        <field name="examination_type_ids" domain="[('id', 'in', all_examination_type_ids)]" widget="many2many_tags" force_save="1" string='Examination types' options="{'no_create': true, 'no_quick_create': true,}"/>
+                        <field name="all_examination_type_ids" widget="many2many_tags" invisible="1"/>
+                        <field name="carriers_type_ids" invisible="1"/>
+                        <field name="carriers_type_id" domain="[('id','in',carriers_type_ids)]" options="{'no_create': true, 'no_quick_create': true,}"/>
+                        <field name="carriers_number_ids" invisible="1"/>
+                        <field name="carriers_number_id" domain="[('id','in',carriers_number_ids)]" options="{'no_create': true, 'no_edit': true, 'no_quick_create': true,}"/>
+                        <field name="sale_order_id" invisible="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="add_container"
+                            type="object" class="oe_highlight"
+                            string="Save"/>
+                    <button special="cancel"
+                            string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,55 @@
+<odoo>
+<!--    <record id="kw_gem_product_template_form" model="ir.ui.view">-->
+<!--        <field name="name">product.template.form (kw_gem)</field>-->
+<!--        <field name="model">product.template</field>-->
+<!--        <field name="inherit_id"-->
+<!--               ref="product.product_template_only_form_view"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//page[@name='general_information']" position="after">-->
+<!--                <page name="types" string="Types">-->
+<!--                    <group>-->
+<!--                        <field name="kw_examination_type_ids"-->
+<!--                               widget="many2many_tags"/>-->
+<!--                    </group>-->
+<!--                </page>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+    <record id="kw_gem_product_template_form" model="ir.ui.view">
+        <field name="name">product.template.form (kw_gem)</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id"
+               ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='general_information']" position="after">
+                <page name="types" string="Types">
+                    <group>
+                        <field name="kw_examination_type_ids"
+                               widget="many2one" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="kw_is_research" invisible="1"/>
+                        <field name="kw_abbreviation" widget="many2one" options="{'no_create': True, 'no_open': True}"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="kw_gem_product_product_form" model="ir.ui.view">
+        <field name="name">product.product.form (kw_gem)</field>
+        <field name="model">product.product</field>
+       <field name="inherit_id"
+                ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='general_information']" position="after">
+                <page name="types" string="Types">
+                    <group>
+                        <field name="kw_examination_type_ids"
+                               widget="many2one"/>
+                        <field name="kw_is_research" invisible="1"/>
+                        <field name="kw_abbreviation" widget="many2one"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

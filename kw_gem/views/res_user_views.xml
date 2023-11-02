@@ -1,0 +1,48 @@
+<odoo>
+
+    <record id="kw_gem_res_users_view_form_preferences" model="ir.ui.view">
+            <field name="name">res.users.preferences.form.inherit (kw_gem)</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="mail.view_users_form_simple_modif_mail"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='preferences_page']" position="inside">
+                    <group>
+                        <field name="is_head_doctor" string="Head Doctor" widget="boolean_toggle"/>
+                        <field name="kw_conclusion_signature_name" string="Name for Conclusion Signature"/>
+                        <field name="kw_position_for_conclusion_signature" string="Position for Conclusion Signature"/>
+                        <field name="kw_facsimile" string="Conclusion Facsimile" widget="image"/>
+                        <field name="kw_facsimile_str" invisible="1"/>
+                    </group>
+                </xpath>
+            </field>
+    </record>
+
+    <record id="kw_gem_res_users_view_users_form" model="ir.ui.view">
+            <field name="name">res.users.form.inherit (kw_gem)</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='preferences']" position="inside">
+                    <group string="Conclusion">
+                        <field name="is_head_doctor" string="Head Doctor" widget="boolean_toggle"/>
+                        <field name="kw_conclusion_signature_name" string="Name for Conclusion Signature"/>
+                        <field name="kw_position_for_conclusion_signature" string="Position for Conclusion Signature"/>
+                        <field name="kw_facsimile" string="Conclusion Facsimile" widget="image"/>
+                        <field name="kw_facsimile_str" invisible="1"/>
+                    </group>
+                </xpath>
+            </field>
+    </record>
+
+    <record id="kw_gem_res_users_view_users_tree" model="ir.ui.view">
+            <field name="name">res.users.tree.inherit (kw_gem)</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='login']" position="after">
+                    <field name="is_head_doctor" string="Head Doctor"/>
+                </xpath>
+            </field>
+    </record>
+
+</odoo>

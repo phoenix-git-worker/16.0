@@ -1,0 +1,42 @@
+<odoo noupdate="1">
+    <record id="kw_gem_carriers_number_1w" model="kw.gem.carriers.number">
+        <field name="name">Total containers 1</field>
+        <field name="carrier_type">total_container</field>
+    </record>
+    <record id="kw_gem_carriers_number_2w" model="kw.gem.carriers.number">
+        <field name="name">Total containers: 2</field>
+        <field name="carrier_type">total_container</field>
+    </record>
+    <record id="kw_gem_carriers_number_3w" model="kw.gem.carriers.number">
+        <field name="name">Total containers: 3</field>
+        <field name="carrier_type">total_container</field>
+    </record>
+    <record id="kw_gem_carriers_number_4w" model="kw.gem.carriers.number">
+        <field name="name">Total containers: 4</field>
+        <field name="carrier_type">total_container</field>
+    </record>
+    <record id="kw_gem_carriers_number_5w" model="kw.gem.carriers.number">
+        <field name="name">Total containers: 5</field>
+        <field name="carrier_type">total_container</field>
+    </record>
+    <record id="kw_gem_carriers_number_11w" model="kw.gem.carriers.number">
+        <field name="name">1</field>
+        <field name="carrier_type">container_cassette_slide</field>
+    </record>
+    <record id="kw_gem_carriers_number_12w" model="kw.gem.carriers.number">
+        <field name="name">2</field>
+        <field name="carrier_type">container_cassette_slide</field>
+    </record>
+    <record id="kw_gem_carriers_number_13w" model="kw.gem.carriers.number">
+        <field name="name">3</field>
+        <field name="carrier_type">container_cassette_slide</field>
+    </record>
+    <record id="kw_gem_carriers_number_14w" model="kw.gem.carriers.number">
+        <field name="name">4</field>
+        <field name="carrier_type">container_cassette_slide</field>
+    </record>
+    <record id="kw_gem_carriers_number_15w" model="kw.gem.carriers.number">
+        <field name="name">5</field>
+        <field name="carrier_type">container_cassette_slide</field>
+    </record>
+</odoo>

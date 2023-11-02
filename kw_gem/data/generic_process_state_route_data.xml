@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+
+<!--Sale order-->
+
+    <record id="kw_gem_generic_process_gem_sale_order_route2"
+            model="generic.process.stage.route">
+        <field name="name">Registered</field>
+        <field name="sequence">2</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin'), ref('kw_gem_generic_process.group_kw_gem_generic_process_registrar')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_draft"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_confirm"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route3"
+            model="generic.process.stage.route">
+        <field name="name">Laboratory</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin'), ref('kw_gem_generic_process.group_kw_gem_generic_process_registrar')])]"/>
+        <field name="sequence">3</field>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_confirm"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_progress"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route4"
+            model="generic.process.stage.route">
+        <field name="name">Described</field>
+        <field name="sequence">4</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_progress"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_described"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route5"
+            model="generic.process.stage.route">
+        <field name="name">Cassettes</field>
+        <field name="sequence">5</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_described"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_cassettes"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route6"
+            model="generic.process.stage.route">
+        <field name="name">Processing</field>
+        <field name="sequence">6</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_cassettes"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_process"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route7"
+            model="generic.process.stage.route">
+        <field name="name">Slides</field>
+        <field name="sequence">7</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_process"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_slides"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route8"
+            model="generic.process.stage.route">
+        <field name="name">Colored</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="is_partner_sale_order" eval="True"/>
+        <field name="sequence">8</field>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_slides"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_colored"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route9"
+            model="generic.process.stage.route">
+        <field name="name">Preparation done</field>
+        <field name="is_partner_sale_order" eval="True"/>
+        <field name="sequence">9</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_colored"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_preparation_done"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route10"
+            model="generic.process.stage.route">
+        <field name="name">Conclusion start</field>
+        <field name="sequence">10</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin'), ref('kw_gem_generic_process.group_kw_gem_generic_process_junior_doctor'), ref('kw_gem_generic_process.group_kw_gem_generic_process_senior_doctor')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_preparation_done"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_result"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route11"
+            model="generic.process.stage.route">
+        <field name="name">Conclusion to be confirmed</field>
+        <field name="sequence">11</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin'), ref('kw_gem_generic_process.group_kw_gem_generic_process_junior_doctor'), ref('kw_gem_generic_process.group_kw_gem_generic_process_senior_doctor')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_result"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_conclusion_to_be_confirmed"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route12"
+            model="generic.process.stage.route">
+        <field name="name">Conclusion done</field>
+        <field name="sequence">12</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_conclusion_to_be_confirmed"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_conclusion"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route13"
+            model="generic.process.stage.route">
+        <field name="name">Conclusion sent</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="sequence">13</field>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_conclusion"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_sent"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route14"
+            model="generic.process.stage.route">
+        <field name="name">Archive</field>
+        <field name="sequence">14</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin'), ref('kw_gem_generic_process.group_kw_gem_generic_process_office_administrator'), ref('kw_gem_generic_process.group_kw_gem_generic_process_2_office_administrator')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_sent"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_archive"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route15"
+            model="generic.process.stage.route">
+        <field name="name">Return to Slides (Preparation done)</field>
+        <field name="sequence">15</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_preparation_done"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_slides"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route16"
+            model="generic.process.stage.route">
+        <field name="name">Return to Cassettes (Preparation done)</field>
+        <field name="sequence">16</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_preparation_done"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_cassettes"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route18"
+            model="generic.process.stage.route">
+        <field name="name">Return from Described to Laboratory</field>
+        <field name="sequence">18</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_described"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_progress"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route19"
+            model="generic.process.stage.route">
+        <field name="name">Return from Cassettes to Laboratory</field>
+        <field name="sequence">19</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_cassettes"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_progress"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route20"
+            model="generic.process.stage.route">
+        <field name="name">Return from Processing to Laboratory</field>
+        <field name="sequence">20</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_process"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_progress"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route21"
+            model="generic.process.stage.route">
+        <field name="name">Return from Slides to Laboratory</field>
+        <field name="sequence">21</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_slides"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_progress"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route22"
+            model="generic.process.stage.route">
+        <field name="name">Return from Colored to Laboratory</field>
+        <field name="sequence">22</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_colored"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_progress"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route23"
+            model="generic.process.stage.route">
+        <field name="name">Return from Preparation done to Laboratory</field>
+        <field name="sequence">23</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_preparation_done"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_progress"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route24"
+            model="generic.process.stage.route">
+        <field name="name">Return to Slides (Conclusion done)</field>
+        <field name="sequence">24</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_result"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_slides"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route25"
+            model="generic.process.stage.route">
+        <field name="name">Return to Cassettes (Conclusion start)</field>
+        <field name="sequence">25</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_result"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_cassettes"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route26"
+            model="generic.process.stage.route">
+        <field name="name">Return to Slides (Conclusion done)</field>
+        <field name="sequence">26</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_conclusion_to_be_confirmed"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_slides"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route27"
+            model="generic.process.stage.route">
+        <field name="name">Return to Cassettes (Conclusion to be confirmed)</field>
+        <field name="sequence">27</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_conclusion_to_be_confirmed"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_cassettes"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route28"
+            model="generic.process.stage.route">
+        <field name="name">Processing - Slides</field>
+        <field name="sequence">28</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_cassettes"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_slides"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route29"
+            model="generic.process.stage.route">
+        <field name="name">Return to Cassettes (Slides)</field>
+        <field name="sequence">29</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_slides"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_cassettes"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route30"
+            model="generic.process.stage.route">
+        <field name="name">Conclusion to be confirmed</field>
+        <field name="sequence">30</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin'), ref('kw_gem_generic_process.group_kw_gem_generic_process_doctor_director'), ref('kw_gem_generic_process.group_kw_gem_generic_process_manager')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_conclusion"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_conclusion_to_be_confirmed"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route31"
+            model="generic.process.stage.route">
+        <field name="name">Conclusion done</field>
+        <field name="sequence">31</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin'), ref('kw_gem_generic_process.group_kw_gem_generic_process_doctor_director'), ref('kw_gem_generic_process.group_kw_gem_generic_process_manager')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_archive"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_conclusion"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sale_order_route32"
+            model="generic.process.stage.route">
+        <field name="name">Conclusion done</field>
+        <field name="sequence">32</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin'), ref('kw_gem_generic_process.group_kw_gem_generic_process_doctor_director'), ref('kw_gem_generic_process.group_kw_gem_generic_process_manager')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_sent"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sale_conclusion"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sale_order_type1"/>
+    </record>
+
+<!--Slide-->
+
+    <record id="kw_gem_generic_process_gem_slide_route1"
+            model="generic.process.stage.route">
+        <field name="name">Colored</field>
+        <field name="sequence">1</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin'), ref('kw_gem_generic_process.group_kw_gem_generic_process_laboratory_assistant')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_slide_draft"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_slide_colored"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_slide_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_slide_route2"
+            model="generic.process.stage.route">
+        <field name="name">Preparation Done</field>
+        <field name="sequence">2</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin'), ref('kw_gem_generic_process.group_kw_gem_generic_process_labaratory_administrator')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_slide_colored"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_slide_preparation_done"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_slide_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_slide_route3"
+            model="generic.process.stage.route">
+        <field name="name">Archive</field>
+        <field name="sequence">3</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin'), ref('kw_gem_generic_process.group_kw_gem_generic_process_office_administrator')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_slide_preparation_done"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_slide_archive"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_slide_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_slide_route4"
+            model="generic.process.stage.route">
+        <field name="name">Return Preparation Done (Archive)</field>
+        <field name="sequence">4</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_slide_archive"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_slide_preparation_done"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_slide_type1"/>
+    </record>
+
+<!--Cassette-->
+
+    <record id="kw_gem_generic_process_gem_cassette_route1"
+            model="generic.process.stage.route">
+        <field name="name">Processing</field>
+        <field name="sequence">1</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin'), ref('kw_gem_generic_process.group_kw_gem_generic_process_laboratory_assistant')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_cassette_draft"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_cassette_process"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_cassette_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_cassette_route2"
+            model="generic.process.stage.route">
+        <field name="name">Slides</field>
+        <field name="sequence">2</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin'), ref('kw_gem_generic_process.group_kw_gem_generic_process_laboratory_assistant')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_cassette_process"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_cassette_slides"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_cassette_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_cassette_route3"
+            model="generic.process.stage.route">
+        <field name="name">Archive</field>
+        <field name="sequence">3</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin'), ref('kw_gem_generic_process.group_kw_gem_generic_process_office_administrator')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_cassette_slides"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_cassette_archive"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_cassette_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_cassette_route4"
+            model="generic.process.stage.route">
+        <field name="name">New - Slides</field>
+        <field name="sequence">4</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_cassette_draft"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_cassette_slides"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_cassette_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_cassette_route5"
+            model="generic.process.stage.route">
+        <field name="name">New</field>
+        <field name="sequence">5</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin'), ref('kw_gem_generic_process.group_kw_gem_generic_process_laboratory_assistant')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_cassette_process"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_cassette_draft"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_cassette_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_cassette_route6"
+            model="generic.process.stage.route">
+        <field name="name">Return Slides (Archive)</field>
+        <field name="sequence">6</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_cassette_archive"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_cassette_slides"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_cassette_type1"/>
+    </record>
+
+<!--Sample-->
+
+    <record id="kw_gem_generic_process_gem_sample_route1"
+            model="generic.process.stage.route">
+        <field name="name">Described</field>
+        <field name="sequence">1</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin'), ref('kw_gem_generic_process.group_kw_gem_generic_process_laboratory_assistant')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sample_draft"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sample_described"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sample_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sample_route2"
+            model="generic.process.stage.route">
+        <field name="name">Cassettes</field>
+        <field name="sequence">2</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin'), ref('kw_gem_generic_process.group_kw_gem_generic_process_laboratory_assistant')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sample_described"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sample_cassettes"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sample_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sample_route3"
+            model="generic.process.stage.route">
+        <field name="name">Archive</field>
+        <field name="sequence">3</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin'), ref('kw_gem_generic_process.group_kw_gem_generic_process_office_administrator')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sample_cassettes"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sample_archive"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sample_type1"/>
+    </record>
+
+    <record id="kw_gem_generic_process_gem_sample_route4"
+            model="generic.process.stage.route">
+        <field name="name">Return Cassettes (Archive)</field>
+        <field name="sequence">4</field>
+        <field name="allowed_group_ids"
+               eval="[(6,0, [ref('kw_gem_generic_process.group_kw_gem_generic_user_admin')])]"/>
+        <field name="stage_from_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sample_archive"/>
+        <field name="stage_to_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_state_sample_cassettes"/>
+        <field name="process_flow_id"
+               ref="kw_gem_generic_process.kw_gem_generic_process_gem_sample_type1"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="kw_gem_generic_process_view_cassette_cassette_form" model="ir.ui.view">
+        <field name="name">kw.gem.cassette.form (kw_gem_generic_process)</field>
+        <field name="model">kw.gem.cassette</field>
+        <field name="inherit_id" ref="kw_gem.view_cassette_cassette_form"/>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="replace">
+                <header>
+                    <div class="generic-process-action-widget">
+                        <field name="generic_process_action_json"
+                               widget="generic_process_action_widget"/>
+                    </div>
+                    <field name="stage_id" widget="statusbar"
+                           required="0"
+                           attrs="{'readonly': True}"
+                           domain="[('id', '=', stage_id)]" invisible="1"/>
+                    <field name="state" widget="statusbar" invisible="0"/>
+                </header>
+            </xpath>
+            <xpath expr="//field[@name='comment']" position="after">
+                <field name="generic_process_flow_id" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
