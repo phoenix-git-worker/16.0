@@ -1,5 +1,6 @@
 from odoo import models
 
+
 class InvoiceXlsx(models.AbstractModel):
     _name = 'report.kw_gem_invoicing.kw_download_inv_xlsx'
     _inherit = 'report.report_xlsx.abstract'
@@ -42,13 +43,13 @@ class InvoiceXlsx(models.AbstractModel):
             sheet.set_column('F:F', 80)
             sheet.set_column('G:G', 15)
 
-
             sheet.write('B2', 'ინვოისის დეტალური ჩაშლა', bold_f14)
 
             sheet.write('B4', 'ინვოისის ნომერი:')
             sheet.write('C4', inv.name)
             sheet.write('B5', 'ივნისი:')
-            sheet.write('C5', inv.narration[3:-4])
+            narration_text = str(inv.narration).replace('</p><p>', ', ')[3: -4]
+            sheet.write('C5', narration_text)
             sheet.write('B6', 'დამკვეთი:')
             sheet.write('C6', inv.partner_id.name)
 
@@ -67,33 +68,33 @@ class InvoiceXlsx(models.AbstractModel):
             )
             for i, line in enumerate(lines):
                 sheet.write(
-                    f'B{start + i}', 
-                    inv.invoice_origin, 
+                    f'B{start + i}',
+                    inv.invoice_origin,
                     border_1_text_center
                 )
                 sheet.write(
-                    f'C{start + i}', 
-                    order.date_order, 
+                    f'C{start + i}',
+                    order.date_order,
                     border_1_text_center_datetime
                 )
                 sheet.write(
-                    f'D{start + i}', 
-                    order.kw_patient_id.name, 
+                    f'D{start + i}',
+                    order.kw_patient_id.name,
                     border_1_text_center
                 )
                 sheet.write(
-                    f'E{start + i}', 
-                    order.kw_patient_vat, 
+                    f'E{start + i}',
+                    order.kw_patient_vat,
                     border_1_text_center
                 )
                 sheet.write(
-                    f'F{start + i}', 
-                    line.name, 
+                    f'F{start + i}',
+                    line.name,
                     border_1
                 )
                 sheet.write(
-                    f'G{start + i}', 
-                    line.price_total, 
+                    f'G{start + i}',
+                    line.price_total,
                     border_1_text_center
                 )
             sheet.write(
@@ -101,14 +102,3 @@ class InvoiceXlsx(models.AbstractModel):
                 inv.kw_total_payable_amount,
                 bold_f14_align_center
             )
-
-
-
-
-
-
-
-
-
-
-

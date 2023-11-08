@@ -11,7 +11,7 @@ class PortalAccount(CustomerPortal):
         type='http', auth="public", website=True
     )
     def portal_inv1_detail(self, inv_type, invoice_id, access_token=None,
-            report_type=None, download=False, **kw):
+                           report_type=None, download=False, **kw):
         try:
             invoice_sudo = self._document_check_access(
                 'account.move', invoice_id, access_token
@@ -26,6 +26,6 @@ class PortalAccount(CustomerPortal):
         return self._show_report(
             model=invoice_sudo,
             report_type=report_type,
-            report_ref= f'kw_gem_invoicing.{reports.get(inv_type)}',
+            report_ref=f'kw_gem_invoicing.{reports.get(inv_type)}',
             download=download
         )
