@@ -1,0 +1,120 @@
+<odoo noupdate="0">
+
+    <record id="kw_gem_invoicing_report_paperformat_portrait"
+            model="report.paperformat">
+        <field name="name">European A4</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+    </record>
+
+    <record id="kw_gem_invoicing_report_paperformat_landscape"
+            model="report.paperformat">
+        <field name="name">European A4</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+    </record>
+
+    <record id="action_kw_gem_invoicing_report_inv1" model="ir.actions.report">
+        <field name="name">Print Inv-1</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">kw_gem_invoicing.kw_gem_invoicing_container1</field>
+        <field name="report_file">kw_gem_invoicing.invoice_template1</field>
+        <field name="print_report_name">(object._get_report_base_filename())</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="paperformat_id" ref="kw_gem_invoicing.kw_gem_invoicing_report_paperformat_portrait"/>
+        <field name="binding_type">report</field>
+        <field name="groups_id" eval="[(6, 0, [ref('kw_gem.group_kw_gem_financier'), ref('base.group_system')])]"/>
+    </record>
+
+    <record id="action_kw_gem_invoicing_report_inv2_p1" model="ir.actions.report">
+        <field name="name">Print Inv-2 p1</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">kw_gem_invoicing.kw_gem_invoicing_container2_p1</field>
+        <field name="report_file">kw_gem_invoicing.invoice_template2_p1</field>
+        <field name="print_report_name">(object._get_report_base_filename())</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="paperformat_id" ref="kw_gem_invoicing.kw_gem_invoicing_report_paperformat_portrait"/>
+        <field name="binding_type">report</field>
+        <field name="groups_id" eval="[(6, 0, [ref('kw_gem.group_kw_gem_financier'), ref('base.group_system')])]"/>
+    </record>
+
+    <record id="action_kw_gem_invoicing_report_inv2_p2" model="ir.actions.report">
+        <field name="name">Print Inv-2 p2</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">kw_gem_invoicing.kw_gem_invoicing_container2_p2</field>
+        <field name="report_file">kw_gem_invoicing.invoice_template2_p2</field>
+        <field name="print_report_name">(object._get_report_base_filename())</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="paperformat_id" ref="kw_gem_invoicing.kw_gem_invoicing_report_paperformat_landscape"/>
+        <field name="binding_type">report</field>
+        <field name="groups_id" eval="[(6, 0, [ref('kw_gem.group_kw_gem_financier'), ref('base.group_system')])]"/>
+    </record>
+
+    <record id="kw_inherit_account_view_move_form" model="ir.ui.view">
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='preview_invoice']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='preview_invoice']" position="after">
+                <button name="preview_invoice_1" type="object" string="Preview Inv-1" data-hotkey="o"
+                    title="Preview invoice"
+                    attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund'))]}"/>
+                <button name="preview_invoice_2p1" type="object" string="Preview Inv-2 p1" data-hotkey="o"
+                    title="Preview invoice"
+                    attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund'))]}"/>
+                <button name="preview_invoice_2p2" type="object" string="Preview Inv-2 p2" data-hotkey="o"
+                    title="Preview invoice"
+                    attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund'))]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Download XLSX  -->
+    <record id="kw_account_move_download_xlsx" model="ir.actions.report">
+        <field name="name">Download XLSX</field>
+        <field name="model">account.move</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">kw_gem_invoicing.kw_download_inv_xlsx</field>
+        <field name="report_file">kw_download_inv_xlsx</field>
+        <field name="attachment_use">False</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_view_types">form</field>
+        <field name="binding_type">action</field>
+    </record>
+
+
+    <record id="account.account_invoices" model="ir.actions.report">
+        <field name="groups_id"
+               eval="[(6, 0, [ref('base.group_system')])]"/>
+    </record>
+
+    <record id="account.action_account_original_vendor_bill" model="ir.actions.report">
+        <field name="groups_id"
+               eval="[(6, 0, [ref('base.group_system')])]"/>
+    </record>
+
+    <record id="account.account_invoices_without_payment" model="ir.actions.report">
+        <field name="groups_id"
+               eval="[(6, 0, [ref('base.group_system')])]"/>
+    </record>
+
+</odoo>
+
