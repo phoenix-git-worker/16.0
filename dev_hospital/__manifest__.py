@@ -9,11 +9,17 @@
 
     ],
     'data': [
+        'security/ir.model.access.csv',
 
+        'views/menu.xml',
+        'views/patient_views.xml',
     ],
     'demo': [
 
     ],
-    'auto_install': False,
+
+    'images': ['static/description/icon.png'],
+
+    'installable': True,
     'application': False,
 }
