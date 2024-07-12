@@ -17,3 +17,5 @@ class DevPatient(models.Model):
     def compute_lucky_number(self):
         for rec in self:
             rec.lucky_number = round(rec.age * 13 / 10)
+
+    # init comment
